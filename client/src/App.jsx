@@ -1,14 +1,54 @@
-import './App.css'
+import  { useEffect, useState } from 'react';
+import supabase from './utils/supabase';
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    //const session = supabase.auth.session();
+    const getSession = async () => {
+      const { data: { session }} = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+
+    getSession();    
+
+    const { data: {subscription}} = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+      
+    });
+
+    return () => {
+      if(subscription) subscription.unsubscribe();
+    };
+  }, []);
+
+  const login = async (provider) => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider, // 'google' for YouTube or 'twitch'
+    });
+    if (error) console.error('Error logging in:', error.message);
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
-    <>
-      <div>
-        <h1>Hello World</h1>
-      </div> 
-    </>
-  )
+    <div>
+      {user ? (
+        <div>
+          <h2>Welcome, {user.email}</h2>
+          <button onClick={logout}>Logout</button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={() => login('google')}>Login with Google</button>
+          <button onClick={() => login('twitch')}>Login with Twitch</button>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
