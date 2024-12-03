@@ -24,8 +24,15 @@ function App() {
   }, []);
 
   const login = async (provider) => {
+    const twitchScopes = 'user:read:email user:read:broadcast analytics:read:games moderator:read:followers';
+    const googleScopes =  'https://www.googleapis.com/auth/youtube.readonly';
+
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider, // 'google' for YouTube or 'twitch'
+      options: {
+        scopes: provider === 'twitch' ? twitchScopes : googleScopes,
+      },
     });
     if (error) console.error('Error logging in:', error.message);
   };
