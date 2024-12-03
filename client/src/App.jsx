@@ -1,5 +1,9 @@
 import  { useEffect, useState } from 'react';
 import supabase from './utils/supabase';
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import Campaigns from './pages/campaign';
+import LinkedAccounts from './pages/linkedAccount';
+import { Box, Button, Typography } from "@mui/material";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,19 +46,37 @@ function App() {
   };
 
   return (
-    <div>
-      {user ? (
-        <div>
-          <h2>Welcome, {user.email}</h2>
-          <button onClick={logout}>Logout</button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={() => login('google')}>Login with Google</button>
-          <button onClick={() => login('twitch')}>Login with Twitch</button>
-        </div>
-      )}
-    </div>
+    <Router>
+      <Box p={3} sx={{ borderBottom: 1 }}>
+        {user ? (
+          <>
+            <Typography variant="h5">Welcome, {user.email}</Typography>
+            <Button variant="contained" onClick={logout}>
+              Logout
+            </Button>
+            <Box mt={2}>
+              <Link to="/linked-accounts" style={{ marginRight: 10 }}>Linked Accounts</Link>
+              <Link to="/campaigns">Campaigns</Link>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Typography variant="h6">Login to your account</Typography>
+            <Button variant="contained" onClick={() => login("google")}>
+              Login with Google
+            </Button>
+            <Button variant="contained" onClick={() => login("twitch")} style={{ marginLeft: 10 }}>
+              Login with Twitch
+            </Button>
+          </>
+        )}
+      </Box>
+
+      <Routes>
+        <Route path="/linked-accounts" element={<LinkedAccounts />} />
+        <Route path="/campaigns" element={<Campaigns />} />
+      </Routes>
+    </Router>
   );
 }
 
