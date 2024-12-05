@@ -6,7 +6,7 @@ export const getAllCampaigns = async (req, res) => {
         // Get all rows from the 'campaigns' table
         const { data, error } = await supabase
             .from('campaigns')
-            .select('*');
+            .select('brand, description, payout');
         // If there is an error, throw it
         if (error) throw error;
         // Return the data as JSON
