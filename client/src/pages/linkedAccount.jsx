@@ -20,9 +20,7 @@ const LinkedAccounts = () => {
 
   
   useEffect(() => {
-
-    console.log(typeof mockData);
-    console.log(mockData);
+    
     const getAccounts = async () => {
       setLoading(true);
       try {
@@ -57,6 +55,7 @@ const LinkedAccounts = () => {
         <ul>
           {linkedAccounts.map((account, index) => (
             <li key={index}>{account.provider}</li>
+
           ))}
         </ul>
       )}
