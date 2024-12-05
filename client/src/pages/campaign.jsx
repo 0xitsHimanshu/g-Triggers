@@ -1,38 +1,77 @@
-import  { useState, useEffect } from "react";
-import supabase from "../utils/supabase";
-import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import  { useEffect, useState } from "react";
+import { fetchCampaigns, addCampaign } from "../utils/api";
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newCampaign, setNewCampaign] = useState({
+    brand: "",
+    description: "",
+    payout: "",
+  });
 
   useEffect(() => {
-    const fetchCampaigns = async () => {
-      // Fetch all campaigns from the database
-      const { data, error } = await supabase.from("campaigns").select("*");
-
-      if (error) console.error("Error fetching campaigns:", error.message);
-      else setCampaigns(data || []);
+    const getCampaigns = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchCampaigns();
+        setCampaigns(data);
+      } catch (err) {
+        console.error("Error loading campaigns:", err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchCampaigns();
+    getCampaigns();
   }, []);
 
+  const handleAddCampaign = async () => {
+    try {
+      await addCampaign(newCampaign);
+      alert("Campaign added successfully!");
+      setCampaigns((prev) => [...prev, newCampaign]);
+      setNewCampaign({ brand: "", description: "", payout: "" });
+    } catch (err) {
+      console.error("Error adding campaign:", err.message);
+    }
+  };
+
   return (
-    <Box sx={{ pt: 2, pl : 2}}>
-      <Typography variant="h5">Available Campaigns</Typography>
-      {campaigns.map((campaign) => (
-        <Card key={campaign.id} style={{ margin: "10px 0" }}>
-          <CardContent>
-            <Typography>Brand: {campaign.brand}</Typography>
-            <Typography>Description: {campaign.description}</Typography>
-            <Typography>Payout: ${campaign.payout}</Typography>
-            <Button variant="contained" color="primary">
-              Apply
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
-    </Box>
+    <div>
+      <h1>Campaigns</h1>
+      {loading ? (
+        <p>Loading campaigns...</p>
+      ) : (
+        <ul>
+          {campaigns.map((campaign, index) => (
+            <li key={index}>
+              {campaign.brand} - ${campaign.payout}
+            </li>
+          ))}
+        </ul>
+      )}
+      <h2>Add New Campaign</h2>
+      <input
+        type="text"
+        placeholder="Brand"
+        value={newCampaign.brand}
+        onChange={(e) => setNewCampaign({ ...newCampaign, brand: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Description"
+        value={newCampaign.description}
+        onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Payout"
+        value={newCampaign.payout}
+        onChange={(e) => setNewCampaign({ ...newCampaign, payout: e.target.value })}
+      />
+      <button onClick={handleAddCampaign}>Add Campaign</button>
+    </div>
   );
 };
 

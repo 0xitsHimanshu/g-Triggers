@@ -1,0 +1,6 @@
+POST  http://localhost:8000/api/auth/fetch-link-account
+Content-Type: application/json
+
+{
+    "userID": "e64dae39-7d6d-42e0-b36a-538f6e6a956b"
+}

@@ -2,10 +2,10 @@ import supabase from '../supabase.js'
 
 
 export const linkAccount = async (req, res) => {
-    const {userID, provider, accessToken, refreshToken} = req.body
+    const {userId, provider, accessToken, refreshToken} = req.body
     try{
         const { error } = await supabase.from("linked_accounts").insert({
-            user_id: userID,
+            user_id: userId,
             provider: provider,
             access_token: accessToken,
             refresh_token: refreshToken
