@@ -20,7 +20,7 @@ const LinkedAccounts = () => {
 
   
   useEffect(() => {
-    
+
     const getAccounts = async () => {
       setLoading(true);
       try {
@@ -52,12 +52,19 @@ const LinkedAccounts = () => {
       {loading ? (
         <p>Loading accounts...</p>
       ) : (
-        <ul>
+        <>
           {linkedAccounts.map((account, index) => (
-            <li key={index}>{account.provider}</li>
+            <>
+              <h2 key={index}>{account.provider}</h2>
+              <ul>
+                <li> User ID: {account.user_id} </li>
+                {/* <li>Access Token: {account.access_token}</li> */}
+                <li>Refresh Token: {account.refresh_token}</li>
 
+              </ul>
+            </>
           ))}
-        </ul>
+        </>
       )}
       <button onClick={() => handleLinkAccount(mockData)}>Link New Account</button>
     </div>
