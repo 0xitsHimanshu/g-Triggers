@@ -128,3 +128,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+node_modules
+
+#Example Json
+
+example-user-1.json
+example-user-2.json
