@@ -53,7 +53,7 @@ export default function RootLayout({
                   <div className="flex justify-center items-center gap-4">
                     <ThemeSwitcher />
                     <span className="border-l h-6" />
-                    {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                    <HeaderAuth />
                   </div>
                 </div>
               </nav>
