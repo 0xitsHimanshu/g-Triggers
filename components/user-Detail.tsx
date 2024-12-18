@@ -6,12 +6,9 @@ import { useSession } from "next-auth/react";
 
 export default function UserDetails({ userData}: { userData: Object}) {
   const [Data, setData] = useState(userData);
-  // const { data: session } = useSession();
-  useEffect(() => {
-    // Handle client-specific logic here (if needed)
-  }, [userData]);
-
-  // console.log(session)
+  const { data: session } = useSession();
+  
+  console.log(session)
 
   return (
     <div className="flex flex-col gap-2 items-start">

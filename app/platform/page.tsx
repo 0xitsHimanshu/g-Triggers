@@ -7,8 +7,8 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
-export default async function ProtectedPage() {
-  const session = await getServerSession(authOptions);
+export default async function PlateformPage() {
+
   const supabase = await createClient();
 
   const {
