@@ -17,13 +17,10 @@ export async function POST(request: Request) {
     await connectToDatabase();
 
     // Add the platforms object to the user data
-    const userDataWithPlatforms = {
-      ...supabaseUser,
-      platforms: {
-        twitch: null,
-        youtube: null,
-        trovo: null,
-      },
+    const platforms = {
+      twitch: { connected: false },
+      youtube: { connected: false },
+      trovo: { connected: false },
     };
 
     // Check if the user already exists in MongoDB
@@ -31,8 +28,8 @@ export async function POST(request: Request) {
 
     if (!user) {
       user = await User.create({
-        userData: userDataWithPlatforms,
-        platforms: userDataWithPlatforms.platforms,
+        userData: supabaseUser,
+        platforms,
       });
     }
 
