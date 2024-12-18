@@ -10,6 +10,8 @@ export default function UserDetails({ userData}: { userData: Object}) {
   
   console.log(session)
 
+  
+
   return (
     <div className="flex flex-col gap-2 items-start">
       <h2 className="font-bold text-2xl mb-4">Your user details</h2>

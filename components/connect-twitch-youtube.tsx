@@ -1,41 +1,24 @@
 "use client";
 
-import { SessionProvider, signIn, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import { Twitch, Youtube } from "lucide-react";
 import axios from "axios";
 
-const ConnectAccount = () => {
+const ConnectAccount = ({ userId }: { userId: string }) => {
   const { data: session } = useSession();
-  
 
   const handleConnect = async (provider: "twitch" | "youtube") => {
-    console.log("signing in...");
-    const result = await signIn(provider);
-    console.log("signed in successfully...");
+    const result = await signIn(provider, { redirect: false, callbackUrl: "/" });
+    console.log("data send successfully");
     
     if (result && session) {
       // Fetch tokens from session
       const { accessToken, refreshToken } = session;
 
-      // Fetch channel details
-      // let details;
-      // if (provider === "twitch") {
-      //   const { data } = await axios.get("/api/twitch/channel-details", {
-      //     headers: { Authorization: `Bearer ${accessToken}` },
-      //   });
-      //   details = data;
-      // } else if (provider === "youtube") {
-      //   const { data } = await axios.get("/api/youtube/channel-details", {
-      //     headers: { Authorization: `Bearer ${accessToken}` },
-      //   });
-      //   details = data;
-      // }
-
-
       // Send tokens and details to update the user in MongoDB
       await axios.post("/api/update-platform", {
-        userId: session.user.id,
+        userId: userId,
         platform: provider,
         tokens: { access_token: accessToken, refresh_token: refreshToken },
         // details,

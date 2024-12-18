@@ -30,6 +30,11 @@ export const authOptions: AuthOptions = {
       console.log("User Info:", user);
       return true; // Allow sign-in
     },
+    async redirect({ url, baseUrl }) {
+      // Customize redirect behavior
+      // Return the URL you want to redirect to after sign-in
+      return baseUrl; // or a specific path like '/'
+    },
     async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account) {
         token.accessToken = account.access_token;

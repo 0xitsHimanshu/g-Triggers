@@ -6,9 +6,6 @@ export async function POST(request: Request) {
   try {
     const { userId, platform, tokens, details } = await request.json();
 
-    console.log("Fetching data from client")
-    console.log(userId, platform, tokens, details);
-
     if (!userId || !platform || !tokens) {
       return NextResponse.json(
         { message: "Missing required parameters" },
