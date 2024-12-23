@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import Image from "next/image";
-import NextAuthSessionProvider from "@/components/SessionProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -25,7 +24,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <NextAuthSessionProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -66,7 +64,6 @@ export default function RootLayout({
               </div>
             </main>
           </ThemeProvider>
-        </NextAuthSessionProvider>
       </body>
     </html>
   );
