@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
 
-// POST handler for /api/syncUser
 export async function POST(request: Request) {
   try {
     const { supabaseUser } = await request.json();
@@ -16,21 +15,28 @@ export async function POST(request: Request) {
 
     await connectToDatabase();
 
-    // Add the platforms object to the user data
-    const platforms = {
-      twitch: { connected: false },
-      youtube: { connected: false },
-      trovo: { connected: false },
-    };
-
     // Check if the user already exists in MongoDB
     let user = await User.findOne({ "userData.id": supabaseUser.id });
 
     if (!user) {
+      // Only initialize platforms as false for new users
+      const platforms = {
+        twitch: { connected: false },
+        youtube: { connected: false },
+        trovo: { connected: false },
+      };
+
       user = await User.create({
         userData: supabaseUser,
         platforms,
       });
+    } else {
+      // Update user data while preserving existing platform connections
+      user.userData = {
+        ...user.userData,
+        ...supabaseUser,
+      };
+      await user.save();
     }
 
     return NextResponse.json({ user });

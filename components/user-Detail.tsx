@@ -8,9 +8,8 @@ export default function UserDetails({ userData}: { userData: Object}) {
   const [Data, setData] = useState(userData);
   const { data: session } = useSession();
   
-  console.log(session)
-
-  
+  if(session)
+    console.log(session)
 
   return (
     <div className="flex flex-col gap-2 items-start">
