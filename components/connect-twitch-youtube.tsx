@@ -17,7 +17,7 @@ const ConnectAccount = ({ userId }: { userId: string }) => {
       const { accessToken, refreshToken } = session;
 
       // Send tokens and details to update the user in MongoDB
-      await axios.post("/api/update-platform", {
+      await axios.post("http://localhost:3000/api/update-platform", {
         userId: userId,
         platform: provider,
         tokens: { access_token: accessToken, refresh_token: refreshToken },
@@ -40,14 +40,14 @@ const ConnectAccount = ({ userId }: { userId: string }) => {
           <Twitch size={16} />
           Connect Twitch
         </Button>
-        <Button
+        {/* <Button
           onClick={() => signIn("youtube")}
           variant={"outline"}
           className="flex items-center gap-2 text-white bg-red-600 hover:bg-red-700 hover:text-white border-red-700"
         >
           <Youtube size={16} />
           Connect YouTube
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
