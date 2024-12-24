@@ -88,7 +88,7 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
       });
 
       // Call the connectPlatform route to save to MongoDB
-
+      
       await axios.post("http://localhost:3000/api/connectPlatform", {
         supabaseUser: data?.session?.user,
         platform: provider,
