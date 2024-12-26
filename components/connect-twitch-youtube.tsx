@@ -1,48 +1,68 @@
-"use client";
+// file @/components/connect-twitch-youtube.tsx
 
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "./ui/button";
 import { Trash, Twitch, Youtube } from "lucide-react";
-import { Provider } from "@supabase/supabase-js";
+import {
+  ConnectAccountProps,
+  PlatformDetails,
+  UserMetadata,
+} from "@/types/user.types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-// Platform details interface
-interface PlatformDetails {
-  access_token: string | undefined;
-  refresh_token: string | undefined;
-  provider_name: Provider;
-  user_name: string;
-}
-
-// Platforms interface
-interface Platforms {
-  twitch?: PlatformDetails;
-  youtube?: PlatformDetails;
-}
-
-// User metadata interface
-interface UserMetadata {
-  platforms?: Platforms;
-  [key: string]: any; // For other potential metadata
-}
-
-// User interface
-interface User {
-  user_metadata: UserMetadata;
-  [key: string]: any; // For other user properties
-}
-
-// Props interface
-interface ConnectAccountProps {
-  user: User;
-}
-
 const ConnectAccount = ({ user }: ConnectAccountProps) => {
   const [loading, setLoading] = useState(false);
+  const [platformStats, setPlatformStats] = useState<any>({});
   const supabase = createClient();
   const router = useRouter();
+
+  useEffect(() => {
+    // Fetch platform stats for connected accounts
+    const fetchStats = async () => {
+      const platforms = user.user_metadata?.platforms;
+      const userId = user.user_metadata?.sub;
+
+      if (platforms?.twitch?.access_token) {
+        try {
+          const twitchData = await fetchTwitchData(
+            platforms.twitch.access_token,
+            userId
+          );
+          setPlatformStats((prev: any) => ({
+            ...prev,
+            twitch: {
+              display_name: twitchData.display_name,
+              followers: twitchData.view_count, // Adjust based on Twitch API response
+            },
+          }));
+        } catch (error) {
+          console.error("Error fetching Twitch data:", error);
+        }
+      }
+
+      if (platforms?.youtube?.access_token) {
+        try {
+          const youtubeData = await fetchYouTubeData(
+            platforms.youtube.access_token
+          );
+          setPlatformStats((prev: any) => ({
+            ...prev,
+            youtube: {
+              title: youtubeData.snippet.title,
+              subscribers: youtubeData.statistics.subscriberCount,
+            },
+          }));
+        } catch (error) {
+          console.error("Error fetching YouTube data:", error);
+        }
+      }
+    };
+
+    fetchStats();
+  }, [user]);
 
   const handleConnect = async (provider: "google" | "twitch") => {
     setLoading(true);
@@ -88,7 +108,7 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
       });
 
       // Call the connectPlatform route to save to MongoDB
-      
+
       await axios.post("http://localhost:3000/api/connectPlatform", {
         supabaseUser: data?.session?.user,
         platform: provider,
@@ -130,8 +150,7 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
         action: "disconnect",
       });
 
-      await router.push('/platform');
-      
+      await router.push("/platform");
     } finally {
       setLoading(false);
     }
@@ -157,15 +176,22 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
               : "Connect Twitch"}
           </Button>
           {user.user_metadata?.platforms?.twitch && (
-            <Button
-              onClick={() => handleDisconnect("twitch")}
-              disabled={loading}
-              variant={"outline"}
-              className="flex items-center gap-2 text-red-600 border-red-700 hover:bg-red-100"
-            >
-              <Trash size={16} />
-              Disconnect Twitch
-            </Button>
+            <>
+              <div className="text-sm text-gray-600">
+                {platformStats.twitch
+                  ? `@${platformStats.twitch.display_name} (${platformStats.twitch.followers} followers)`
+                  : "Fetching stats..."}
+              </div>
+              <Button
+                onClick={() => handleDisconnect("twitch")}
+                disabled={loading}
+                variant={"outline"}
+                className="flex items-center gap-2 text-red-600 border-red-700 hover:bg-red-100"
+              >
+                <Trash size={16} />
+                Disconnect Twitch
+              </Button>
+            </>
           )}
         </div>
 
@@ -185,15 +211,22 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
               : "Connect YouTube"}
           </Button>
           {user.user_metadata?.platforms?.youtube && (
-            <Button
-              onClick={() => handleDisconnect("youtube")}
-              disabled={loading}
-              variant={"outline"}
-              className="flex items-center gap-2 text-red-600 border-red-700 hover:bg-red-100"
-            >
-              <Trash size={16} />
-              Disconnect YouTube
-            </Button>
+            <>
+              <div className="text-sm text-gray-600">
+                {platformStats.youtube
+                  ? `${platformStats.youtube.title} (${platformStats.youtube.subscribers} subscribers)`
+                  : "Fetching stats..."}
+              </div>
+              <Button
+                onClick={() => handleDisconnect("youtube")}
+                disabled={loading}
+                variant={"outline"}
+                className="flex items-center gap-2 text-red-600 border-red-700 hover:bg-red-100"
+              >
+                <Trash size={16} />
+                Disconnect YouTube
+              </Button>
+            </>
           )}
         </div>
       </div>
