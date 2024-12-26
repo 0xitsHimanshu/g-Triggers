@@ -1,3 +1,4 @@
+// file @/components/user-Detail.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,6 +7,7 @@ export default function UserDetails({ user }: { user: any }) {
   const [userData, setUserData] = useState(user);
 
   useEffect(() => {
+    
     setUserData(user);
   }, [user]);
 
