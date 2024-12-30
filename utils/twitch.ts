@@ -1,36 +1,28 @@
+// file @/utils/twitch.ts
+
 import axios from "axios";
 
+// Ensure client ID is available
 const clientId = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
 
 if (!clientId) {
   throw new Error("NEXT_PUBLIC_TWITCH_CLIENT_ID environment variable is not set");
 }
 
-// Twitch API base URL
-const TWITCH_API_BASE = "https://api.twitch.tv/helix";
-
-// Common headers for Twitch API requests
-const getTwitchHeaders = (accessToken: string) => ({
-  Authorization: `Bearer ${accessToken}`,
-  "Client-Id": clientId,
-});
-
-// Fetch all Twitch-related data for a user
+// Fetch aggregate Twitch user data
 export const fetchTwitchData = async (
   accessToken: string,
   userId: string
-): Promise<TwitchUser> => {
+): Promise<TwitchUser & { followers: number; videos: TwitchVideo[] | string }> => {
   try {
-    const [userData, followersData, videosData] = await Promise.all([
-      fetchUserDataFromTwitch(accessToken, userId),
-      fetchTwitchTotalFollowers(accessToken, userId),
-      fetchVideosFromTwitch(accessToken, userId),
-    ]);
+    const userData = await fetchUserDataFromTwitch(accessToken, userId);
+    const followersData = await fetchTwitchTotalFollowers(accessToken, userId);
+    const videosData = await fetchVideosFromTwitch(accessToken, userId);
 
     return {
       ...userData,
       followers: followersData?.total ?? 0,
-      videos: videosData.length > 0 ? videosData : "No Previous videos",
+      videos: Array.isArray(videosData) && videosData.length > 0 ? videosData : "No Previous videos",
     };
   } catch (error) {
     console.error("Error fetching Twitch data:", error);
@@ -45,72 +37,93 @@ export const fetchUserDataFromTwitch = async (
 ): Promise<TwitchUser> => {
   try {
     const response = await axios.get<{ data: TwitchUser[] }>(
-      `${TWITCH_API_BASE}/users?id=${userId}`,
+      `https://api.twitch.tv/helix/users?id=${userId}`,
       {
-        headers: getTwitchHeaders(accessToken),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Client-Id": clientId,
+        },
       }
     );
+
+    if (response.data.data.length === 0) {
+      throw new Error(`No user found for ID: ${userId}`);
+    }
+
     return response.data.data[0];
   } catch (error) {
     console.error("Error fetching user data from Twitch:", error);
-    throw new Error("Failed to fetch user data");
+    throw new Error("Failed to fetch Twitch user data");
   }
 };
 
-// Fetch currently active stream data
+// Fetch current streams for a user
 export const fetchAllStreams = async (
   accessToken: string,
   userName: string
 ): Promise<TwitchStream | "No Currently Streaming"> => {
   try {
     const response = await axios.get<{ data: TwitchStream[] }>(
-      `${TWITCH_API_BASE}/streams?user_login=${userName}`,
+      `https://api.twitch.tv/helix/streams?user_login=${userName}`,
       {
-        headers: getTwitchHeaders(accessToken),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Client-Id": clientId,
+        },
       }
     );
-    return response.data.data[0] || "No Currently Streaming";
+
+    const data = response.data.data[0];
+    return data || "No Currently Streaming";
   } catch (error) {
-    console.error("Error fetching active streams from Twitch:", error);
-    return "No Currently Streaming";
+    console.error("Error fetching streams from Twitch:", error);
+    throw new Error("Failed to fetch Twitch streams");
   }
 };
 
-// Fetch total followers for a Twitch user
+// Fetch total followers for a user
 export const fetchTwitchTotalFollowers = async (
   accessToken: string,
   userId: string
 ): Promise<TwitchFollowers> => {
   try {
     const response = await axios.get<TwitchFollowers>(
-      `${TWITCH_API_BASE}/channels/followers?broadcaster_id=${userId}`,
+      `https://api.twitch.tv/helix/channels/followers?broadcaster_id=${userId}`,
       {
-        headers: getTwitchHeaders(accessToken),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Client-Id": clientId,
+        },
       }
     );
+
     return response.data;
   } catch (error) {
     console.error("Error fetching followers data from Twitch:", error);
-    return { total: 0, data: [] }; // Fallback to empty structure
+    return { total: 0, data: [] }; // Return default empty structure
   }
 };
 
-// Fetch videos from Twitch
+// Fetch archived videos for a user
 export const fetchVideosFromTwitch = async (
   accessToken: string,
   userId: string
 ): Promise<TwitchVideo[] | "No Previous videos"> => {
   try {
     const response = await axios.get<{ data: TwitchVideo[] }>(
-      `${TWITCH_API_BASE}/videos?user_id=${userId}&type=archive`,
+      `https://api.twitch.tv/helix/videos?user_id=${userId}&type=archive`,
       {
-        headers: getTwitchHeaders(accessToken),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Client-Id": clientId,
+        },
       }
     );
+
     const videos = response.data.data;
     return videos.length > 0 ? videos : "No Previous videos";
   } catch (error) {
     console.error("Error fetching videos from Twitch:", error);
-    return "No Previous videos";
+    return [];
   }
 };

@@ -12,9 +12,10 @@ export default async function PlateformPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // const { data } = await supabase.auth.getSession();
-  console.log(user);
+  const { data } = await supabase.auth.getSession();
 
+  console.log(user);
+  
   if (!user) {
     return redirect("/sign-in");
   }
