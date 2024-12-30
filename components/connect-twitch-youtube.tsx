@@ -12,6 +12,19 @@ import {
 } from "@/types/user.types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { fetchTwitchData } from "@/utils/twitch";
+import { fetchDataFromYoutube, fetchYoutubeData } from "@/utils/youtube";
+
+interface PlatformStats {
+  twitch?: {
+    display_name: string;
+    followers: number;
+  };
+  youtube?: {
+    title: string;
+    subscribers: number;
+  };
+}
 
 const ConnectAccount = ({ user }: ConnectAccountProps) => {
   const [loading, setLoading] = useState(false);
@@ -25,10 +38,10 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
       const platforms = user.user_metadata?.platforms;
       const userId = user.user_metadata?.sub;
 
-      if (platforms?.twitch?.access_token) {
+      if (platforms?.twitch?.refresh_token) {
         try {
           const twitchData = await fetchTwitchData(
-            platforms.twitch.access_token,
+            platforms.twitch.refresh_token,
             userId
           );
           setPlatformStats((prev: any) => ({
@@ -45,14 +58,14 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
 
       if (platforms?.youtube?.access_token) {
         try {
-          const youtubeData = await fetchYouTubeData(
+          const youtubeData = await fetchDataFromYoutube(
             platforms.youtube.access_token
           );
-          setPlatformStats((prev: any) => ({
+          setPlatformStats((prev: PlatformStats) => ({
             ...prev,
             youtube: {
-              title: youtubeData.snippet.title,
-              subscribers: youtubeData.statistics.subscriberCount,
+              title: youtubeData.statistics.title, // Adjusting based on API response
+              subscribers: parseInt(youtubeData.statistics.subscriberCount, 10), // Converting to number
             },
           }));
         } catch (error) {
@@ -63,6 +76,7 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
 
     fetchStats();
   }, [user]);
+
 
   const handleConnect = async (provider: "google" | "twitch") => {
     setLoading(true);
@@ -150,7 +164,7 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
         action: "disconnect",
       });
 
-      await router.push("/platform");
+      router.push("/platform");
     } finally {
       setLoading(false);
     }
