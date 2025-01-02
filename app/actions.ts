@@ -5,7 +5,7 @@ import axios from "axios";
  * @param {Object} userData - Contains email, password, and other optional user details
  * @returns {Promise<any>}
  */
-export const signUp = async (userData: {
+export const signUpAction = async (userData: {
   email: string;
   password: string;
   name?: string;
@@ -25,7 +25,7 @@ export const signUp = async (userData: {
  * @param {string} password - User's password
  * @returns {Promise<any>}
  */
-export const signIn = async (email: string, password: string) => {
+export const signInAction = async (email: string, password: string) => {
   try {
     const response = await axios.post("/api/signin", { email, password });
     return response.data; // e.g., { message: "Sign-in successful", token }
@@ -40,7 +40,7 @@ export const signIn = async (email: string, password: string) => {
  * @param {string} email - User's email to send the reset link
  * @returns {Promise<any>}
  */
-export const forgotPassword = async (email: string) => {
+export const forgotPasswordAction = async (email: string) => {
   try {
     const response = await axios.post("/api/requestPasswordReset", { email });
     return response.data; // e.g., { message: "Password reset link sent" }
@@ -56,7 +56,7 @@ export const forgotPassword = async (email: string) => {
  * @param {string} newPassword - The new password to set
  * @returns {Promise<any>}
  */
-export const resetPassword = async (token: string, newPassword: string) => {
+export const resetPasswordAction = async (token: string, newPassword: string) => {
   try {
     const response = await axios.post("/api/resetPassword", {
       token,
