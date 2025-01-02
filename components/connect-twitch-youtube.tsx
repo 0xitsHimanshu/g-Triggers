@@ -2,7 +2,6 @@
 
 "use client";
 import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { Button } from "./ui/button";
 import { Trash, Twitch, Youtube } from "lucide-react";
 import {
@@ -28,7 +27,6 @@ interface PlatformStats {
 const ConnectAccount = ({ user }: ConnectAccountProps) => {
   const [loading, setLoading] = useState(false);
   const [platformStats, setPlatformStats] = useState<any>({});
-  const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {
@@ -64,7 +62,7 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({ // instead of using supabase you apis for oauth login
         provider,
         options: {
           // For YouTube, we use Google OAuth

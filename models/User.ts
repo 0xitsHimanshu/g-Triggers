@@ -1,34 +1,16 @@
-import { Schema, model, models } from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new Schema(
-  {
-    userData: { type: Object, required: true }, // Entire Supabase user object
-    platforms: {
-      twitch: {
-        connected: { type: Boolean, default: false },
-        access_token: { type: String, default: null },
-        refresh_token: { type: String, default: null },
-        provider_name: { type: String, default: null },
-        user_name: { type: String, default: null },
-      },
-      youtube: {
-        connected: { type: Boolean, default: false },
-        access_token: { type: String, default: null },
-        refresh_token: { type: String, default: null },
-        provider_name: { type: String, default: null },
-        user_name: { type: String, default: null },
-      },
-      trovo: {
-        connected: { type: Boolean, default: false },
-        access_token: { type: String, default: null },
-        refresh_token: { type: String, default: null },
-        provider_name: { type: String, default: null },
-        user_name: { type: String, default: null },
-      },
-    },
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  username: { type: String, required: true },
+  isConfirmed: { type: Boolean, default: false },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
+  platforms: {
+    twitch: { type: Object, default: null },
+    youtube: { type: Object, default: null },
   },
-  { timestamps: true }
-);
+}, { timestamps: true });
 
-const User = models.User || model("User", userSchema);
-export default User;
+export default mongoose.models.User || mongoose.model("User", userSchema);

@@ -1,24 +1,13 @@
 import ConnectAccount from "@/components/connect-twitch-youtube";
 import UserDetails from "@/components/user-Detail";
-import { createClient } from "@/utils/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default async function PlateformPage() {
 
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data } = await supabase.auth.getSession();
-
-  console.log(user);
-  
-  if (!user) {
-    return redirect("/sign-in");
-  }
+  const user = {
+    user_metadata: {}
+  };
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12 items-center pt-5 px-5">
