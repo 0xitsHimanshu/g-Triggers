@@ -4,11 +4,11 @@ import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function AuthButton() {
-  const supabase = await createClient();
+  const supabase = await createClient(); //here is the client for getting the user
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser(); // getting user and its details
 
   return user ? (
     <div className="flex items-center gap-4">

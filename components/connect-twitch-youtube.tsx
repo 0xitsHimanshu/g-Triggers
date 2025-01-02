@@ -13,7 +13,6 @@ import {
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { fetchTwitchData } from "@/utils/twitch";
-import { fetchDataFromYoutube, fetchYoutubeData } from "@/utils/youtube";
 
 interface PlatformStats {
   twitch?: {
@@ -38,10 +37,10 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
       const platforms = user.user_metadata?.platforms;
       const userId = user.user_metadata?.sub;
 
-      if (platforms?.twitch?.refresh_token) {
+      if (platforms?.twitch?.access_token) {
         try {
           const twitchData = await fetchTwitchData(
-            platforms.twitch.refresh_token,
+            platforms.twitch.access_token,
             userId
           );
           setPlatformStats((prev: any) => ({
@@ -56,27 +55,10 @@ const ConnectAccount = ({ user }: ConnectAccountProps) => {
         }
       }
 
-      if (platforms?.youtube?.access_token) {
-        try {
-          const youtubeData = await fetchDataFromYoutube(
-            platforms.youtube.access_token
-          );
-          setPlatformStats((prev: PlatformStats) => ({
-            ...prev,
-            youtube: {
-              title: youtubeData.statistics.title, // Adjusting based on API response
-              subscribers: parseInt(youtubeData.statistics.subscriberCount, 10), // Converting to number
-            },
-          }));
-        } catch (error) {
-          console.error("Error fetching YouTube data:", error);
-        }
-      }
     };
 
     fetchStats();
   }, [user]);
-
 
   const handleConnect = async (provider: "google" | "twitch") => {
     setLoading(true);
