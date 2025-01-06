@@ -1,39 +1,53 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
 import axios from "axios";
 
-/**
- * Sign Up Action
- * @param {Object} userData - Contains email, password, and other optional user details
- * @returns {Promise<any>}
- */
-export const signUpAction = async (userData: {
-  email: string;
-  password: string;
-  name?: string;
-}) => {
-  try {
-    const response = await axios.post("/api/signup", userData);
-    return response.data; // e.g., { message: "User registered successfully", user }
-  } catch (error: any) {
-    console.error("Sign-up error:", error.response?.data || error.message);
-    throw error.response?.data || error.message;
-  }
-};
+// Sign-up Action
+export async function signUpAction(formData: FormData): Promise<void> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-/**
- * Sign In Action
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Promise<any>}
- */
-export const signInAction = async (email: string, password: string) => {
   try {
-    const response = await axios.post("/api/signin", { email, password });
-    return response.data; // e.g., { message: "Sign-in successful", token }
+    const response = await axios.post("http:/localhost:3000/api/auth/signup", {
+      email,
+      password,
+    });
+
+    if (response.status === 200) {
+      redirect("/sign-in?message=Sign-up successful. Please log in.");
+    } else {
+      console.log(response.data)
+      redirect(`/sign-up?message=${encodeURIComponent(response.data.message)}/Sign-up-failed`);
+    }
   } catch (error: any) {
-    console.error("Sign-in error:", error.response?.data || error.message);
-    throw error.response?.data || error.message;
+    redirect(`/sign-up?message=${encodeURIComponent(error.response?.data?.message || "Sign-up failed")}`);
   }
-};
+}
+
+
+export async function signInAction( formData: FormData ): Promise<void> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  try {
+    // Use NextAuth's `signIn` function
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (result?.error) {
+      redirect(`/sign-in?message=${encodeURIComponent(result.error)}`); // Redirect to the sign-in page with an error message
+    }
+    redirect("/platform"); // Redirect to the home page
+  } catch (error: any) {
+    redirect(`/sign-in?message=${encodeURIComponent(error.response?.data?.message || "Sign-in failed")}`);
+  }
+}
+
 
 /**
  * Forgot Password Action

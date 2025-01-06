@@ -1,16 +1,25 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-const userSchema = new mongoose.Schema({
+export interface PlatformDetails {
+  provider: string;
+  access_token: string;
+  refresh_token: string;
+  profile_url: string;
+}
+
+export interface UserDocument extends Document {
+  email: string;
+  name: string;
+  platforms: Record<string, PlatformDetails>;
+  createdAt: Date;
+}
+
+const UserSchema = new Schema<UserDocument>({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  username: { type: String, required: true },
-  isConfirmed: { type: Boolean, default: false },
-  resetToken: { type: String },
-  resetTokenExpiry: { type: Date },
-  platforms: {
-    twitch: { type: Object, default: null },
-    youtube: { type: Object, default: null },
-  },
-}, { timestamps: true });
+  name: { type: String, required: true },
+  platforms: { type: Object, default: {} },
+  createdAt: { type: Date, default: Date.now },
+});
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model<UserDocument>("User", UserSchema);
+export default User;

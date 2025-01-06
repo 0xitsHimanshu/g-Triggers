@@ -1,13 +1,20 @@
 import ConnectAccount from "@/components/connect-twitch-youtube";
 import UserDetails from "@/components/user-Detail";
 import { InfoIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export default async function PlateformPage() {
 
+  const session = await getServerSession()
   const user = {
     user_metadata: {}
   };
+
+  if (!session) {
+    console.log("User is not authenticated");
+    redirect("/sign-in");
+  }
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12 items-center pt-5 px-5">
