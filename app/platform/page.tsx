@@ -1,19 +1,26 @@
-import ConnectAccount from "@/components/connect-twitch-youtube";
-import UserDetails from "@/components/user-Detail";
 import { InfoIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import connectToDatabase from "@/lib/mongodb";
+import User from "@/models/User";
 
-export default async function PlateformPage() {
-
-  const session = await getServerSession()
-  const user = {
-    user_metadata: {}
-  };
+export default async function DashboardPage() {
+  // Retrieve the session
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     console.log("User is not authenticated");
     redirect("/sign-in");
+  }
+  
+  // Fetch user data from MongoDB
+  await connectToDatabase();
+  const user = await User.findOne({ email: session.user?.email });
+
+  if (!user) {
+    console.error("User not found in database");
+    redirect("/sign-up");
   }
 
   return (
@@ -23,12 +30,9 @@ export default async function PlateformPage() {
           <InfoIcon size="16" strokeWidth={2} />
           This is a protected page that you can only see as an authenticated user
         </div>
-        </div>
-          <UserDetails user={user} />
-          <ConnectAccount user={user}/>
-        <div >
       </div>
-      <div></div>
+      {/* <UserDetails user={user} /> */}
+      {/* <ConnectAccount user={user} /> */}
     </div>
   );
 }

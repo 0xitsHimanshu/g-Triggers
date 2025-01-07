@@ -8,10 +8,18 @@ export async function middleware(request: NextRequest) {
   // Extract token from the request
   const token = await getToken({ req: request, secret });
 
-  // Example: Protect specific routes based on authentication
-  const protectedRoutes = ["/platform", "/dashboard"]; // Add routes you want to protect
+  // Get the current pathname
   const pathname = request.nextUrl.pathname;
 
+  // Handle redirect for authenticated users accessing `/`
+  if (pathname === "/" && token) {
+    // Redirect authenticated users to `/platform`
+    const platformUrl = new URL("/platform", request.url);
+    return NextResponse.redirect(platformUrl);
+  }
+
+  // Protect specific routes based on authentication
+  const protectedRoutes = ["/platform", "/dashboard"]; // Add routes you want to protect
   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
     if (!token) {
       // Redirect unauthenticated users to the login page
@@ -20,7 +28,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Allow request to proceed for public routes or authenticated users
+  // Allow request to proceed for public routes or unauthenticated users
   return NextResponse.next();
 }
 

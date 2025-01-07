@@ -1,44 +1,52 @@
+'use client';
+
 import { signInAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TwitchIcon, Video, YoutubeIcon } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
-export default async function Login(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+export default  function Login(props: { searchParams: Promise<Message> }) {
+
+  const handleTwitchSignup = () => {
+      console.log("twitch signup");
+      signIn("twitch");
+    };
   return (
-    <form className="flex-1 flex flex-col min-w-64 pt-20 ">
-      <h1 className="text-2xl font-medium">Sign in</h1>
-      <p className="text-sm text-foreground">
-        Don't have an account?{" "}
-        <Link className="text-foreground font-medium underline" href="/sign-up">
-          Sign up
-        </Link>
+    <div className="flex flex-col items-center justify-center gap-6 min-h-screen">
+      <h1 className="text-2xl font-medium">Sign Up / Log In</h1>
+      <p className="text-sm text-muted-foreground">
+        Use your streaming platform to sign up or log in
       </p>
-      <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-        <Label htmlFor="email">Email</Label>
-        <Input name="email" placeholder="you@example.com" required />
-        <div className="flex justify-between items-center">
-          <Label htmlFor="password">Password</Label>
-          <Link
-            className="text-xs text-foreground underline"
-            href="/forgot-password"
-          >
-            Forgot Password?
-          </Link>
-        </div>
-        <Input
-          type="password"
-          name="password"
-          placeholder="Your password"
-          required
-        />
-        <SubmitButton pendingText="Signing In..." formAction={signInAction}>
-          Sign in
-        </SubmitButton>
-        <FormMessage message={searchParams} />
+      <div className="flex flex-col gap-4">
+        <Button
+          onClick={() => signIn("twitch", { callbackUrl: "/platform" })}
+          className="flex items-center gap-2 text-white bg-purple-600 hover:bg-purple-700"
+        >
+          <TwitchIcon size={16} />
+          Sign Up with Twitch
+        </Button>
+        <Button
+          onClick={() =>
+            signIn("google", { callbackUrl: "/platform" })
+          }
+          className="flex items-center gap-2 text-white bg-red-600 hover:bg-red-700"
+        >
+          <YoutubeIcon size={16} />
+          Sign Up with YouTube
+        </Button>
+        <Button
+          onClick={() => signIn("trovo", { callbackUrl: "/platform" })}
+          className="flex items-center gap-2 text-white bg-green-600 hover:bg-green-700"
+        >
+          <Video size={16} />
+          Sign Up with Trovo
+        </Button>
       </div>
-    </form>
+    </div>
   );
 }
