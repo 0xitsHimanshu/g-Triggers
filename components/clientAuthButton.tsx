@@ -5,7 +5,9 @@ import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 
 type Props = {
-  user: { email: string } | null; // User object or null
+  user: { email: string 
+    name: string
+  } | null; // User object or null
 };
 
 export default function ClientAuthButton({ user }: Props) {
@@ -15,7 +17,7 @@ export default function ClientAuthButton({ user }: Props) {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <span>Hey, {user.email}!</span>
+      <span>Hey, {user.name}!</span>
       <Button onClick={handleSignout} variant="outline">
         Sign out
       </Button>

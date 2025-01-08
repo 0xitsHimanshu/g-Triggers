@@ -1,41 +1,20 @@
 'use client';
 
-import { signUpAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { SmtpMessage } from "../smtp-message";
 import { Button } from "@/components/ui/button";
-import twitchIcon from "@/public/twitch.svg"
-import Image from "next/image";
-import { signIn } from "next-auth/react";
 import { TwitchIcon, Video, YoutubeIcon } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function Signup(props: {
   searchParams: Promise<Message>;
 }) {
-  // const searchParams = await props.searchParams;
-  // if ("message" in searchParams) {
-  //   return (
-  //     <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
-  //       <FormMessage message={searchParams} />
-  //     </div>
-  //   );
-  // }
-
-  const handleTwitchSignup = () => {
-    console.log("twitch signup");
-    signIn("twitc");
-  };
-
+ 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-6 min-h-screen">
-      <h1 className="text-2xl font-medium">Sign Up / Log In</h1>
+      <div className="flex flex-col items-center justify-center gap-6 pt-20 ">
+      <h1 className="text-2xl font-medium">Sign up</h1>
       <p className="text-sm text-muted-foreground">
-        Use your streaming platform to sign up or log in
+        Use your streaming platform to sign up
       </p>
       <div className="flex flex-col gap-4">
         <Button

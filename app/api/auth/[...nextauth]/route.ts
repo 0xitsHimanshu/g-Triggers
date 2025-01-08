@@ -14,13 +14,13 @@ export const authOptions = {
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
       authorization: {
         params: {
-          scope: "https://www.googleapis.com/auth/youtube.readonly",
+          scope: "openid email profile https://www.googleapis.com/auth/youtube.readonly",
         },
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account } : { user: any, account: any }) {
       // Automatically create user in MongoDB
       const { email, name } = user;
       const platformDetails = {
@@ -45,12 +45,12 @@ export const authOptions = {
 
       return true;
     },
-    async session({ session, token }) {
+    async session({ session, token } : { session: any, token: any }) {
       (session as any).user.id = token.id;
       (session as any).accessToken = token.accessToken;
       return session;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account }: { token: any, user: any, account: any }) {
       if (account) {
         (token as any).id = user.id;
         (token as any).accessToken = account.access_token;
@@ -58,6 +58,7 @@ export const authOptions = {
       return token;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

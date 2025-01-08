@@ -4,6 +4,8 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
+import UserDetails from "@/components/user-Detail";
+import ConnectAccount from "@/components/connect-twitch-youtube";
 
 export default async function DashboardPage() {
   // Retrieve the session
@@ -17,7 +19,7 @@ export default async function DashboardPage() {
   // Fetch user data from MongoDB
   await connectToDatabase();
   const user = await User.findOne({ email: session.user?.email });
-
+  
   if (!user) {
     console.error("User not found in database");
     redirect("/sign-up");
@@ -31,8 +33,8 @@ export default async function DashboardPage() {
           This is a protected page that you can only see as an authenticated user
         </div>
       </div>
-      {/* <UserDetails user={user} /> */}
-      {/* <ConnectAccount user={user} /> */}
+      <UserDetails {...user} />
+      <ConnectAccount {...user} />
     </div>
   );
 }
