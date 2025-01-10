@@ -18,12 +18,14 @@ export default async function DashboardPage() {
   
   // Fetch user data from MongoDB
   await connectToDatabase();
-  const user = await User.findOne({ email: session.user?.email });
+  const userDoc = await User.findOne({ email: session.user?.email });
   
-  if (!user) {
+  if (!userDoc) {
     console.error("User not found in database");
     redirect("/sign-up");
   }
+
+  const user = JSON.parse(JSON.stringify(userDoc));
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12 items-center pt-5 px-5">
@@ -33,8 +35,8 @@ export default async function DashboardPage() {
           This is a protected page that you can only see as an authenticated user
         </div>
       </div>
-      <UserDetails {...user} />
-      <ConnectAccount {...user} />
+      <UserDetails user={user} />
+      <ConnectAccount userId={user.email} platforms={user.platforms} />
     </div>
   );
 }

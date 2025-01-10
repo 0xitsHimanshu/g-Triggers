@@ -4,22 +4,13 @@
 import { useState, useEffect } from "react";
 
 export default function UserDetails({ user }: { user: any }) {
-  const [userData, setUserData] = useState(prepareUserData(user));
+  const [userData, setUserData] = useState();
 
   // Define a function to prepare the user data without the toJSON method
-  function prepareUserData(userData: any) {
-    return {
-      _id: userData._id,
-      email: userData.email,
-      name: userData.name,
-      platforms: userData.platforms,
-      createdAt: userData.createdAt,
-      __v: userData.__v,
-    };
-  }
 
   useEffect(() => {
-    setUserData(prepareUserData(user));
+
+    setUserData(user);
   }, [user]);
 
   return (
