@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import Image from "next/image";
+import { Toaster } from "@/components/ui/toaster";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -62,6 +63,7 @@ export default function RootLayout({
                   Add some footer info here! 
               </footer> */}
               </div>
+                  <Toaster />
             </main>
           </ThemeProvider>
       </body>
