@@ -27,6 +27,11 @@ export const authOptions = {
     TwitchProvider({
       clientId: process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID as string,
       clientSecret: process.env.NEXT_PUBLIC_TWITCH_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          scope: "openid user:read:email user:read:broadcast analytics:read:games moderator:read:followers",
+        },
+      },
     }),
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
