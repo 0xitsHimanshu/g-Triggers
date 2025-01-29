@@ -4,10 +4,12 @@
 import { useState, useEffect } from "react";
 
 export default function UserDetails({ user }: { user: any }) {
-  const [userData, setUserData] = useState(user);
+  const [userData, setUserData] = useState();
+
+  // Define a function to prepare the user data without the toJSON method
 
   useEffect(() => {
-    
+
     setUserData(user);
   }, [user]);
 

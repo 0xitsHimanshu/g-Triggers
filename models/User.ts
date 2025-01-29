@@ -1,34 +1,25 @@
-import { Schema, model, models } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-const userSchema = new Schema(
-  {
-    userData: { type: Object, required: true }, // Entire Supabase user object
-    platforms: {
-      twitch: {
-        connected: { type: Boolean, default: false },
-        access_token: { type: String, default: null },
-        refresh_token: { type: String, default: null },
-        provider_name: { type: String, default: null },
-        user_name: { type: String, default: null },
-      },
-      youtube: {
-        connected: { type: Boolean, default: false },
-        access_token: { type: String, default: null },
-        refresh_token: { type: String, default: null },
-        provider_name: { type: String, default: null },
-        user_name: { type: String, default: null },
-      },
-      trovo: {
-        connected: { type: Boolean, default: false },
-        access_token: { type: String, default: null },
-        refresh_token: { type: String, default: null },
-        provider_name: { type: String, default: null },
-        user_name: { type: String, default: null },
-      },
-    },
-  },
-  { timestamps: true }
-);
+export interface PlatformDetails {
+  provider: string;
+  access_token: string;
+  refresh_token: string;
+  profile_url: string;
+}
 
-const User = models.User || model("User", userSchema);
+export interface UserDocument extends Document {
+  email: string;
+  name: string;
+  platforms: Record<string, PlatformDetails>;
+  createdAt: Date;
+}
+
+const UserSchema = new Schema<UserDocument>({
+  email: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  platforms: { type: Object, default: {} },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const User = mongoose.models.User || mongoose.model<UserDocument>("User", UserSchema);
 export default User;

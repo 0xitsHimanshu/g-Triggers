@@ -19,6 +19,9 @@ const config = {
     },
     extend: {
       colors: {
+        'youtube-red': '#FF0000',
+        'twitch-purple': '#9146ff',
+        'trovo-green': '#00b558',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

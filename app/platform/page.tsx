@@ -1,24 +1,31 @@
-import ConnectAccount from "@/components/connect-twitch-youtube";
-import UserDetails from "@/components/user-Detail";
-import { createClient } from "@/utils/supabase/server";
 import { InfoIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import connectToDatabase from "@/lib/mongodb";
+import User from "@/models/User";
+import UserDetails from "@/components/user-Detail";
+import ConnectAccount from "@/components/connect-twitch-youtube";
 
-export default async function PlateformPage() {
+export default async function DashboardPage() {
+  // Retrieve the session
+  const session = await getServerSession(authOptions);
 
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data } = await supabase.auth.getSession();
-
-  console.log(user);
-  
-  if (!user) {
-    return redirect("/sign-in");
+  if (!session) {
+    console.log("User is not authenticated");
+    redirect("/sign-in");
   }
+  
+  // Fetch user data from MongoDB
+  await connectToDatabase();
+  const userDoc = await User.findOne({ email: session.user?.email });
+  
+  if (!userDoc) {
+    console.error("User not found in database");
+    redirect("/sign-up");
+  }
+
+  const user = JSON.parse(JSON.stringify(userDoc));
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12 items-center pt-5 px-5">
@@ -27,12 +34,9 @@ export default async function PlateformPage() {
           <InfoIcon size="16" strokeWidth={2} />
           This is a protected page that you can only see as an authenticated user
         </div>
-        </div>
-          <UserDetails user={user} />
-          <ConnectAccount user={user}/>
-        <div >
       </div>
-      <div></div>
+      <UserDetails user={user} />
+      <ConnectAccount userId={user.email} platforms={user.platforms} provider={user.provider || user.platforms?.provider}/>
     </div>
   );
 }

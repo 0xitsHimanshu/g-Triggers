@@ -1,9 +1,8 @@
-import { Provider } from "@supabase/supabase-js";
 
 export interface PlatformDetails {
   access_token: string | undefined;
   refresh_token: string | undefined;
-  provider_name: Provider;
+  provider_name: string;
   user_name: string;
 }
 
