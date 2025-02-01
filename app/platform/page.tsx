@@ -6,6 +6,7 @@ import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
 import UserDetails from "@/components/user-Detail";
 import ConnectAccount from "@/components/connect-twitch-youtube";
+import UserProfile from "@/components/user-data";
 
 export default async function DashboardPage() {
   // Retrieve the session
@@ -37,6 +38,7 @@ export default async function DashboardPage() {
       </div>
       <UserDetails user={user} />
       <ConnectAccount userId={user.email} platforms={user.platforms} provider={user.provider || user.platforms?.provider}/>
+      <UserProfile user={user} />
     </div>
   );
 }

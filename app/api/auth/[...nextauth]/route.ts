@@ -6,8 +6,8 @@ import GoogleProvider from "next-auth/providers/google";
 interface PlatformDetails {
   provider: string;
   access_token: string;
-  refresh_token: string;
-  // profile_url: string;
+  refresh_token?: string;
+  user_id: string;
   expires_at?: number;
 }
 
@@ -44,31 +44,62 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }: { user: any; account: any; profile?: any }) {
+    async signIn({ user, account }: { user: any; account: any }) {
       try {
-        const platformDetails: PlatformDetails = {
-          provider: account.provider,
-          access_token: account.access_token,
-          refresh_token: account.refresh_token,
-          // profile_url: getProfileUrl(account.provider, profile),
-          expires_at: account.expires_at,
-        };
+        if (!user.email) {
+          console.error("User email is missing in signIn callback.");
+          return false;
+        }
 
-        // Fetch existing user data first
+        let platformDetails: PlatformDetails | null = null;
+
+        if (account?.provider === "twitch") {
+          const twitchUserResponse = await fetch("https://api.twitch.tv/helix/users", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${account.access_token}`,
+              "Client-Id": process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID as string,
+            },
+          });
+
+          const twitchUserData = await twitchUserResponse.json();
+          if (!twitchUserData?.data?.length) {
+            console.error("Failed to fetch Twitch user data.");
+            return false;
+          }
+
+          const twitchUser = twitchUserData.data[0];
+          platformDetails = {
+            provider: account.provider,
+            user_id: twitchUser.id,
+            access_token: account.access_token,
+            refresh_token: account.refresh_token,
+            expires_at: account.expires_at,
+          };
+        } else if (account?.provider === "google") {
+          platformDetails = {
+            provider: account.provider,
+            user_id: user.id,
+            access_token: account.access_token,
+          };
+        }
+
+        if (!platformDetails) {
+          console.error("Platform details are missing.");
+          return false;
+        }
+
         const existingUserResponse = await fetch(
           `${process.env.NEXTAUTH_URL}/api/auth/get-user?email=${user.email}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           }
         );
 
         const existingUser = await existingUserResponse.json();
 
         if (existingUser && existingUser._id) {
-          // Update existing user with new platform
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/update-user`, {
             method: "PUT",
             body: JSON.stringify({
@@ -76,12 +107,9 @@ export const authOptions = {
               platformDetails,
               platform: account.provider,
             }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           });
         } else {
-          // Create new user with initial platform
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/create-user`, {
             method: "POST",
             body: JSON.stringify({
@@ -90,9 +118,7 @@ export const authOptions = {
               platform: account.provider,
               platformDetails,
             }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           });
         }
 
@@ -105,23 +131,27 @@ export const authOptions = {
 
     async session({ session, token }: { session: any; token: any }) {
       try {
-        // Fetch user data including platforms
+        if (!session.user?.email) {
+          console.error("Error: session.user.email is undefined");
+          return session;
+        }
+
         const response = await fetch(
           `${process.env.NEXTAUTH_URL}/api/auth/get-user?email=${session.user.email}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           }
         );
 
-        const userData = await response.json();
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user data: ${response.statusText}`);
+        }
 
-        // Add user data to session
-        session.user.id = token.id;
+        const userData = await response.json();
+        session.user.id = token.id || userData?.id;
         session.accessToken = token.accessToken;
-        session.user.platforms = userData.platforms || {};
+        session.user.platforms = userData?.platforms || {};
 
         return session;
       } catch (error) {
@@ -141,20 +171,5 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Helper function to get profile URLs based on provider
-function getProfileUrl(provider: string, profile: any): string {
-  switch (provider) {
-    case "twitch":
-      return `https://twitch.tv/${profile.preferred_username || profile.name}`;
-    case "google":
-      // For YouTube, you might need to make an additional API call to get the channel URL
-      // For now, we'll use the email as a placeholder
-      return profile.email;
-    default:
-      return profile.email || "";
-  }
-}
-
-const handler = NextAuth(authOptions)
-
-export { handler as GET, handler as POST };
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };  
