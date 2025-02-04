@@ -5,10 +5,33 @@ import User from "@/models/User";
 export async function PUT(request: Request) {
   try {
     const { email, platformDetails, platform } = await request.json();
-    
+
+    if (!email || !platform || !platformDetails) {
+      return NextResponse.json({ error: "Invalid request data" }, { status: 400 });
+    }
+
     await connectToDatabase();
-    
-    const result = await User.findOneAndUpdate(
+
+    // Fetch user data
+    const existingUser = await User.findOne({ email }).lean();
+
+    if (!existingUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Prevent primary platform from being removed
+    if (
+      existingUser.primaryPlatform === platform &&
+      !platformDetails.access_token // If access_token is missing, it means user is trying to remove the platform
+    ) {
+      return NextResponse.json(
+        { error: "You cannot disconnect your primary platform." },
+        { status: 400 }
+      );
+    }
+
+    // Update user platform details
+    const updatedUser = await User.findOneAndUpdate(
       { email },
       {
         $set: {
@@ -19,19 +42,9 @@ export async function PUT(request: Request) {
       { new: true, upsert: false }
     ).lean();
 
-    if (!result) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({ success: true, user: result });
+    return NextResponse.json({ success: true, user: updatedUser });
   } catch (error) {
     console.error("Error updating user:", error);
-    return NextResponse.json(
-      { error: "Failed to update user" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
   }
 }

@@ -50,10 +50,11 @@ export const authOptions = {
           console.error("User email is missing in signIn callback.");
           return false;
         }
-
+    
         let platformDetails: PlatformDetails | null = null;
-
+    
         if (account?.provider === "twitch") {
+          // Fetch user details from Twitch API
           const twitchUserResponse = await fetch("https://api.twitch.tv/helix/users", {
             method: "GET",
             headers: {
@@ -61,17 +62,17 @@ export const authOptions = {
               "Client-Id": process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID as string,
             },
           });
-
+    
           const twitchUserData = await twitchUserResponse.json();
           if (!twitchUserData?.data?.length) {
             console.error("Failed to fetch Twitch user data.");
             return false;
           }
-
-          const twitchUser = twitchUserData.data[0];
+    
+          const twitchUser = twitchUserData.data[0]; // Extract user details
           platformDetails = {
             provider: account.provider,
-            user_id: twitchUser.id,
+            user_id: twitchUser.id, // Save Twitch user ID
             access_token: account.access_token,
             refresh_token: account.refresh_token,
             expires_at: account.expires_at,
@@ -79,16 +80,17 @@ export const authOptions = {
         } else if (account?.provider === "google") {
           platformDetails = {
             provider: account.provider,
-            user_id: user.id,
+            user_id: user.id, // Use Google user ID
             access_token: account.access_token,
           };
         }
-
+    
         if (!platformDetails) {
           console.error("Platform details are missing.");
           return false;
         }
-
+    
+        // Check if the user exists in the database
         const existingUserResponse = await fetch(
           `${process.env.NEXTAUTH_URL}/api/auth/get-user?email=${user.email}`,
           {
@@ -96,10 +98,11 @@ export const authOptions = {
             headers: { "Content-Type": "application/json" },
           }
         );
-
+    
         const existingUser = await existingUserResponse.json();
-
+    
         if (existingUser && existingUser._id) {
+          // User exists → Add platform details but keep primaryPlatform unchanged
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/update-user`, {
             method: "PUT",
             body: JSON.stringify({
@@ -110,18 +113,20 @@ export const authOptions = {
             headers: { "Content-Type": "application/json" },
           });
         } else {
+          // New user → Set the first platform as their primary platform
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/create-user`, {
             method: "POST",
             body: JSON.stringify({
               email: user.email,
               name: user.name,
+              primaryPlatform: account.provider, // ✅ Set primary platform on first sign-in
               platform: account.provider,
               platformDetails,
             }),
             headers: { "Content-Type": "application/json" },
           });
         }
-
+    
         return true;
       } catch (error) {
         console.error("Error in signIn callback:", error);
@@ -172,4 +177,4 @@ export const authOptions = {
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };  
+export { handler as GET, handler as POST };

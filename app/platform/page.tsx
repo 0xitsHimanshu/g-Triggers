@@ -37,7 +37,7 @@ export default async function DashboardPage() {
         </div>
       </div>
       <UserDetails user={user} />
-      <ConnectAccount userId={user.email} platforms={user.platforms} provider={user.provider || user.platforms?.provider}/>
+      <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
     </div>
   );

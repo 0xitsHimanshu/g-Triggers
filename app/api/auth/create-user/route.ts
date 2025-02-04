@@ -19,15 +19,14 @@ export async function POST(request: Request) {
     let user = await User.findOne({ email });
 
     if (!user) {
-      // Create a new user
       user = await User.create({
         email,
         name,
+        primaryPlatform: platform, // ✅ First platform becomes primary
         platforms: { [platform]: platformDetails },
         createdAt: new Date(),
       });
     } else {
-      // Update the existing user's platform details
       user.platforms[platform] = platformDetails;
       await user.save();
     }
