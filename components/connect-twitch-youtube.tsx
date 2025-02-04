@@ -18,16 +18,16 @@ interface Platform {
 
 interface UserPlatforms {
   twitch?: Platform;
-  google?: Platform; // Changed from youtube to google
+  google?: Platform;
 }
 
 interface ConnectAccountProps {
   userId: string;
   platforms?: UserPlatforms;
-  provider?: string;
+  primaryProvider?: string; // Primary provider from MongoDB
 }
 
-const ConnectAccount = ({ userId, platforms, provider }: ConnectAccountProps) => {
+const ConnectAccount = ({ userId, platforms, primaryProvider }: ConnectAccountProps) => {
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
@@ -40,21 +40,21 @@ const ConnectAccount = ({ userId, platforms, provider }: ConnectAccountProps) =>
       disconnectColor: "hover:text-purple-600 hover:border-purple-600",
       provider: "twitch"
     },
-    google: { // Changed from youtube to google
+    google: {
       name: "YouTube",
       icon: Youtube,
       color: "bg-red-600 hover:bg-red-700",
       disconnectColor: "hover:text-red-600 hover:border-red-600",
-      provider: "google" // The actual provider value to use
+      provider: "google"
     }
   };
 
   const isPlatformConnected = (platform: "twitch" | "google"): boolean => {
-    return platform === provider || !!platforms?.[platform]?.access_token;
+    return !!platforms?.[platform]?.access_token;
   };
 
-  const isSignInProvider = (platform: string): boolean => {
-    return platform === provider;
+  const isPrimaryProvider = (platform: string): boolean => {
+    return platform === primaryProvider;
   };
 
   const handleConnect = async (platform: "twitch" | "google") => {
@@ -80,12 +80,12 @@ const ConnectAccount = ({ userId, platforms, provider }: ConnectAccountProps) =>
   const handleDisconnect = async (platform: "twitch" | "google") => {
     setError(null);
 
-    // Prevent disconnecting the sign-in provider
-    if (isSignInProvider(platform)) {
+    // Prevent disconnecting the primary provider
+    if (isPrimaryProvider(platform)) {
       toast({
         variant: "destructive",
         title: "Cannot Disconnect",
-        description: `Cannot disconnect the platform used for sign-in`,
+        description: "Cannot disconnect your primary sign-in account",
       });
       return;
     }
@@ -145,7 +145,7 @@ const ConnectAccount = ({ userId, platforms, provider }: ConnectAccountProps) =>
       <div className="w-full space-y-4">
         {Object.entries(platformConfig).map(([platform, config]) => {
           const isConnected = isPlatformConnected(platform as "twitch" | "google");
-          const isPrimary = isSignInProvider(platform);
+          const isPrimary = isPrimaryProvider(platform);
           const Icon = config.icon;
           
           return (
@@ -160,7 +160,7 @@ const ConnectAccount = ({ userId, platforms, provider }: ConnectAccountProps) =>
                     </span>
                     {isPrimary && (
                       <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                        Sign-in Provider
+                        Primary Account
                       </span>
                     )}
                   </div>
@@ -178,9 +178,9 @@ const ConnectAccount = ({ userId, platforms, provider }: ConnectAccountProps) =>
                   variant="outline"
                   className={config.disconnectColor}
                   disabled={isPrimary}
-                  title={isPrimary ? "Cannot disconnect sign-in provider" : undefined}
+                  title={isPrimary ? "Cannot disconnect primary account" : undefined}
                 >
-                  {isPrimary ? "Primary Sign-in" : `Disconnect ${config.name}`}
+                  {isPrimary ? "Primary Account" : `Disconnect ${config.name}`}
                 </Button>
               ) : (
                 <Button

@@ -10,6 +10,7 @@ export interface PlatformDetails {
 export interface UserDocument extends Document {
   email: string;
   name: string;
+  primaryPlatform: string;
   platforms: Record<string, PlatformDetails>;
   createdAt: Date;
 }
@@ -17,6 +18,7 @@ export interface UserDocument extends Document {
 const UserSchema = new Schema<UserDocument>({
   email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
+  primaryPlatform: { type: String },
   platforms: { type: Object, default: {} },
   createdAt: { type: Date, default: Date.now },
 });
