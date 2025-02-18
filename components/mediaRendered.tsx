@@ -1,7 +1,6 @@
 // components/MediaRenderer.tsx
-import { CampaignData } from '@/types/widget.types';
 import React from 'react';
-
+import { CampaignData } from '@/types/widget.types';
 
 interface MediaRendererProps {
   campaign: CampaignData;
@@ -22,15 +21,12 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({ campaign }) => {
         </video>
       );
     case 'interactive':
-      // For interactive banners, you might want to embed an iframe
-      // which loads the interactiveUrl (if provided) or mediaUrl.
       return (
         <iframe
           className="media-renderer"
           src={interactiveUrl || mediaUrl}
           frameBorder="0"
           scrolling="no"
-          allow="autoplay; encrypted-media"
           title="Interactive Sponsor"
         />
       );

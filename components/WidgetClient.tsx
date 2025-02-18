@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { CampaignData } from '@/types/widget.types';
+import type { CampaignData } from '@/types/widget.types';
 import MediaRenderer from './mediaRendered';
 
 interface WidgetClientProps {
@@ -13,7 +13,7 @@ const WidgetClient: React.FC<WidgetClientProps> = ({ initialCampaign }) => {
   const [campaign, setCampaign] = useState<CampaignData>(initialCampaign);
 
   useEffect(() => {
-    // Connect to your WebSocket endpoint (simulate using localhost or a test endpoint)
+    // Connect to your WebSocket endpoint (simulate with localhost or test endpoint)
     const ws = new WebSocket('ws://localhost:4000'); // Replace with your actual WebSocket URL
 
     ws.onmessage = (event) => {
