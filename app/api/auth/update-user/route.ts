@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
-import User from "@/models/User";
+import User from "@/models/User"; 
 
 export async function PUT(request: Request) {
   try {
@@ -13,7 +13,7 @@ export async function PUT(request: Request) {
     await connectToDatabase();
 
     // Fetch user data
-    const existingUser = await User.findOne({ email }).lean();
+    const existingUser = await User.findOne({ email }).lean() as any;
 
     if (!existingUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
