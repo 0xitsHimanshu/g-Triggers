@@ -1,62 +1,75 @@
+G-Triggers:-
+--G-Triggers is a powerful tool designed for gamers and streamers to automate in-game actions and enhance their streaming experience. 
+--This repository contains the core functionality required to integrate and trigger automated responses based on gameplay events.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
 
-## Features
+Features:-
+--Automate in-game actions based on predefined triggers
+--Seamless integration with OBS for live streaming
+--Customizable trigger conditions
+--Lightweight and efficient performance
+--Easy-to-use interface for managing triggers
+--Supports multiple games with adaptable trigger settings
+--Allows real-time adjustments and modifications
+--Logs all trigger events for analysis and debugging
+--Works with various streaming platforms like Twitch, YouTube, and Facebook Gaming
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
 
-## Clone and run locally
+Installation:-f
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+Prerequisites:-
+--Node.js (Latest LTS version recommended)
+--Git
+--OBS Studio (for streaming integrations)
 
-2. Create a Next.js app using the Supabase Starter template npx command
+Steps:-
 
-   ```bash
-   npx create-next-app -e with-supabase
-   ```
+--Clone the repository:-
+git clone https://github.com/Game-Triggers/g-Triggers.git
 
-3. Use `cd` to change into the app's directory
+--Navigate to the project directory:-
+cd g-Triggers
 
-   ```bash
-   cd name-of-new-app
-   ```
+--Install dependencies:-
+npm install
 
-4. Rename `.env.example` to `.env.local` and update the following:
+--Start the application:
+npm run dev
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+Usage:-
+--Configure your triggers in the settings.
+--Connect the tool to your streaming software.
+--Start your game and let G-Triggers handle the automation!
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+Configuration:-
+--The configuration file allows you to set up various triggers based on your gaming needs. Modify config.json to adjust parameters.
 
-5. You can now run the Next.js local development server:
+Contributing:-
+--We welcome contributions! Follow these steps to contribute:
 
-   ```bash
-   npm run dev
-   ```
+1. Fork the repository.
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+2. Create a new branch:
+git checkout -b feature-branch
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+3. Make your changes and commit:
+git commit -m "Add new feature"
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+4. Push your branch:
+git push origin feature-branch
+
+5. Create a Pull Request.
+
+Troubleshooting:-
+--App not launching? Ensure you have all dependencies installed.
+--Triggers not working? Double-check your config.json settings.
+--OBS integration issues? Make sure OBS WebSocket plugin is installed and configured properly.
+
+
+
+License:-
+--This project is licensed under the MIT License. See LICENSE for details.
+
+Contact:-
+--For any issues or feature requests, please open an issue in the repository or contact us via (example@123.com).
+
