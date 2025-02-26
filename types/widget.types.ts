@@ -7,4 +7,13 @@ export interface CampaignData {
   title: string;
   description: string;
   interactiveUrl?: string;
+  duration: number;
+  "campaign-styles": {
+    opacity: number;
+    width: string;
+    height: string;
+    top: string;
+    left: string;
+    "z-index": string;
+  }
 }

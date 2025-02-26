@@ -40,7 +40,7 @@ export default async function DashboardPage() {
       <UserDetails user={user} />
       <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
-      {/* <DragAndDropButton widgetUrl={"http://localhost:3000/widget/test"} /> */}
+      <DragAndDropButton widgetUrl={"http://localhost:3000/api/widget/testID"} />
     </div>
   );
 }

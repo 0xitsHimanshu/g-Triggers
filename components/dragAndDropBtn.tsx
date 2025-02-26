@@ -8,21 +8,26 @@ interface DragAndDropButtonProps {
 }
 
 const DragAndDropButton: React.FC<DragAndDropButtonProps> = ({ widgetUrl }) => {
+
+  const testURL = `${widgetUrl}?layer-name=test-widget&layer-width=1920&layer-height=1080`;
+
   // Handle drag start event
-  const handleDragStart = (e: React.DragEvent<HTMLButtonElement>) => {
+  const handleDragStart = (e: React.DragEvent) => {
     // Set the widget URL as the data to be transferred during drag
-    e.dataTransfer.setData("text/plain", widgetUrl);
+    e.dataTransfer.setData("text/uri-list", testURL);
+    e.dataTransfer.setData("text/plain", testURL);
   };
 
   return (
     <div className="flex justify-center mt-8">
-      <button
+      <a
+        href={testURL}
         draggable
         onDragStart={handleDragStart}
         className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg"
       >
         Drag me to OBS
-      </button>
+      </a>
     </div>
   );
 };
