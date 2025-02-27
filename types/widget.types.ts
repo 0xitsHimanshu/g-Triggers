@@ -15,5 +15,6 @@ export interface CampaignData {
     top: string;
     left: string;
     "z-index": string;
-  }
+  },
+  breaktimespan: string; // e.g., "10mins" or "60sec"
 }

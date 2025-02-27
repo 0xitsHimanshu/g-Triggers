@@ -2,47 +2,53 @@
 import { NextResponse } from 'next/server';
 import type { CampaignData } from '@/types/widget.types';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const { id } = await params;
-
-  // Simulated campaign data.
-  // In production, replace this with your ad-server API call.
-  // const campaignData: CampaignData = {
-  //   mediaType: 'image', // Change to 'gif', 'video', or 'interactive' as needed.
-  //   mediaUrl: '/media/halloween.gif', // This file should be in your public/media folder.
-  //   title: `Sponsored by ${id}`,
-  //   description: `Amazing deals provided for campaign ${id}!`,
-  //   interactiveUrl: 'https://example.com/interactive-content', // Only used if mediaType is "interactive".
-  //   duration: 10,
-  //   "campaign-styles": {
-  //     opacity: 0.9,
-  //     width: "100px",
-  //     height: "100px",
-  //     top: "20px",
-  //     left: "20px",
-  //     "z-index": "9999"
-  //   }
-  // };
-
-  const campaignData: CampaignData = {
-    mediaType: 'video', // Change to 'gif', 'video', or 'interactive' as needed.
-    mediaUrl: '/media/dominos-Ads.mp4', // This file should be in your public/media folder.
-    title: `Sponsored by ${id}`,
-    description: `Amazing deals provided for campaign ${id}!`,
-    interactiveUrl: 'https://example.com/interactive-content', // Only used if mediaType is "interactive".
-    duration: 20,
+// Simulated mapping of user IDs to selected campaign data.
+const userCampaignMapping: Record<string, CampaignData> = {
+  'user123': {
+    mediaType: 'video',
+    mediaUrl: '/media/dominos-Ads.mp4', // Must exist in your public/media folder
+    title: 'Sponsored by Campaign A for user123',
+    description: 'Amazing deals provided for campaign user123!',
+    interactiveUrl: 'https://example.com/interactive-content',
+    duration: 20, // visible for 20 seconds
     "campaign-styles": {
       opacity: 1,
-      width: "100px",
-      height: "100px",
+      width: "150px",
+      height: "150px",
       top: "20px",
       left: "20px",
       "z-index": "9999"
-    }
-  };
+    },
+    breaktimespan: "60sec"
+  },
+};
 
+// Default campaign if the user has not selected one.
+const defaultCampaign: CampaignData = {
+  mediaType: 'image',
+  mediaUrl: '/media/halloween.gif', // Must exist in public/media folder
+  title: 'Default Sponsor',
+  description: 'Check out our default sponsorship!',
+  interactiveUrl: 'https://example.com/default-interactive',
+  duration: 20, // visible for 10 seconds
+  "campaign-styles": {
+    opacity: 1,
+    width: "100px",
+    height: "100px",
+    top: "20px",
+    left: "20px",
+    "z-index": "9999"
+  },
+  breaktimespan: "60sec"
+};
 
-  /// Convert the campaign styles object to inline CSS string.
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
+
+  // Lookup the user's campaign; if not found, use the default campaign.
+  const campaignData = userCampaignMapping[id] || defaultCampaign;
+
+  // Convert the campaign styles object to an inline CSS string.
   const styleObj = campaignData["campaign-styles"];
   const inlineStyles = `
     opacity: ${styleObj.opacity};
@@ -53,8 +59,19 @@ export async function GET(request: Request, { params }: { params: { id: string }
     z-index: ${styleObj["z-index"]};
   `;
 
-  // Create an HTML document that renders the widget and uses the duration parameter
-  // to hide and re-display the widget periodically.
+  // Parse break time (assuming format like "10mins" or "60sec")
+  let breakTimeMs = 600000; // default 10mins in ms
+  const breakStr = campaignData.breaktimespan;
+  if (breakStr.endsWith("mins")) {
+    breakTimeMs = parseInt(breakStr) * 60 * 1000;
+  } else if (breakStr.endsWith("sec")) {
+    breakTimeMs = parseInt(breakStr) * 1000;
+  }
+
+  // Convert the duration to milliseconds.
+  const durationMs = campaignData.duration * 1000;
+
+  // Construct the self-contained HTML document.
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -73,68 +90,59 @@ export async function GET(request: Request, { params }: { params: { id: string }
             ${inlineStyles}
             font-family: Arial, sans-serif;
             text-align: center;
-            transition: opacity 0.5s ease;
-          }
-          .widget-container img,
-          .widget-container video,
-          .widget-container iframe {
-            max-width: 300px;
           }
         </style>
       </head>
       <body>
-        <div class="widget-container" id="widget">
+        <div class="widget-container" id="widgetContainer">
           ${
-            campaignData.mediaType === 'video' ? `
-            <video autoplay loop muted>
-              <source src="${campaignData.mediaUrl}" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>` :
-            campaignData.mediaType === 'interactive' ? `
-            <iframe src="${campaignData.interactiveUrl || campaignData.mediaUrl}" frameborder="0" scrolling="no" title="Interactive Sponsor"></iframe>` :
-            `<img src="${campaignData.mediaUrl}" alt="Sponsor Media" />`
+            campaignData.mediaType === 'video'
+              ? `<video autoplay muted loop class="media-renderer">
+                   <source src="${campaignData.mediaUrl}" type="video/mp4" />
+                   Your browser does not support the video tag.
+                 </video>`
+              : campaignData.mediaType === 'interactive'
+              ? `<iframe class="media-renderer" src="${campaignData.interactiveUrl || campaignData.mediaUrl}" frameborder="0" scrolling="no" title="Interactive Sponsor"></iframe>`
+              : `<img class="media-renderer" src="${campaignData.mediaUrl}" alt="Sponsor Media" />`
           }
+          <h3>${campaignData.title}</h3>
+          <p>${campaignData.description}</p>
         </div>
         <script>
           (function() {
-            // Duration in milliseconds
-            var duration = ${campaignData.duration} * 1000;
-            var widget = document.getElementById('widget');
-            
-            // Function to toggle widget visibility
-            function toggleWidget() {
-              if (widget.style.opacity === "0") {
-                widget.style.opacity = "1";
-              } else {
-                widget.style.opacity = "0";
-              }
+            // Timing values (in ms)
+            var duration = ${durationMs};
+            var breakTime = ${breakTimeMs};
+            var widgetContainer = document.getElementById('widgetContainer');
+
+            // Function to hide widget, then re-show it after break time.
+            function cycleWidget() {
+              widgetContainer.style.display = 'none';
+              setTimeout(function() {
+                widgetContainer.style.display = 'block';
+                setTimeout(cycleWidget, duration);
+              }, breakTime);
             }
-            
-            // Hide widget after the duration, then re-show it
-            setInterval(function() {
-              toggleWidget();
-            }, duration);
-            
-            // Optional: Setup WebSocket for real-time updates
-            var ws = new WebSocket('ws://localhost:4000');
+
+            // Start the cycle after the initial duration.
+            setTimeout(cycleWidget, duration);
+
+            // Optional: Real-time updates via WebSocket.
+            var ws = new WebSocket('ws://localhost:4000'); // Replace with your WebSocket endpoint.
             ws.onmessage = function(event) {
               try {
                 var updatedData = JSON.parse(event.data);
-                // Update media based on the updated data
-                var container = document.getElementById('widget');
-                if(updatedData.mediaType && updatedData.mediaUrl) {
-                  if(updatedData.mediaType === 'video') {
-                    container.innerHTML = '<video controls loop muted><source src="' + updatedData.mediaUrl + '" type="video/mp4" />Your browser does not support the video tag.</video>';
-                  } else if(updatedData.mediaType === 'interactive') {
-                    container.innerHTML = '<iframe src="' + (updatedData.interactiveUrl || updatedData.mediaUrl) + '" frameborder="0" scrolling="no" title="Interactive Sponsor"></iframe>';
-                  } else {
-                    container.innerHTML = '<img src="' + updatedData.mediaUrl + '" alt="Sponsor Media" />';
-                  }
-                  container.innerHTML += '<h3>' + updatedData.title + '</h3>';
-                  container.innerHTML += '<p>' + updatedData.description + '</p>';
+                var newContent = '';
+                if (updatedData.mediaType === 'video') {
+                  newContent = '<video class="media-renderer" controls loop muted><source src="' + updatedData.mediaUrl + '" type="video/mp4" />Your browser does not support the video tag.</video>';
+                } else if (updatedData.mediaType === 'interactive') {
+                  newContent = '<iframe class="media-renderer" src="' + (updatedData.interactiveUrl || updatedData.mediaUrl) + '" frameborder="0" scrolling="no" title="Interactive Sponsor"></iframe>';
+                } else {
+                  newContent = '<img class="media-renderer" src="' + updatedData.mediaUrl + '" alt="Sponsor Media" />';
                 }
+                widgetContainer.innerHTML = newContent + '<h3>' + updatedData.title + '</h3><p>' + updatedData.description + '</p>';
               } catch (err) {
-                console.error('WebSocket error:', err);
+                console.error('WebSocket update error:', err);
               }
             };
             ws.onerror = function(error) {
