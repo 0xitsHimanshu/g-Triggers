@@ -131,7 +131,9 @@ dist
 
 node_modules
 
-#Example Json
+#Example files
 
+example.html
+e.rest
 example-user-1.json
 example-user-2.json

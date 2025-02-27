@@ -7,6 +7,7 @@ import User from "@/models/User";
 import UserDetails from "@/components/user-Detail";
 import ConnectAccount from "@/components/connect-twitch-youtube";
 import UserProfile from "@/components/user-data";
+import DragAndDropButton from "@/components/dragAndDropBtn";
 
 export default async function DashboardPage() {
   // Retrieve the session
@@ -39,6 +40,7 @@ export default async function DashboardPage() {
       <UserDetails user={user} />
       <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
+      <DragAndDropButton widgetUrl={"http://localhost:3000/api/widget/testID"} />
     </div>
   );
 }
