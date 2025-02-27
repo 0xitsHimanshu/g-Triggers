@@ -1,3 +1,4 @@
+// TWITCH DATA
 import axios from "axios";
 
 const clientId = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID as string;

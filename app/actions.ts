@@ -15,6 +15,7 @@ export async function signUpAction(formData: FormData): Promise<void> {
       password,
     });
 
+    // WHEN USER IS SUCCESSFULLY SIGNED UP THEN IUSER GET REDIRECTED TO THE SIGN-IN PAGE AND IF NOT THEN USER GET REDIRECTED TO SIGN-UP PAGE
     if (response.status === 200) {
       redirect("/sign-in?message=Sign-up successful. Please log in.");
     } else {

@@ -1,3 +1,4 @@
+// COMPONENTS USED TO ANIMATE TEXTS
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";

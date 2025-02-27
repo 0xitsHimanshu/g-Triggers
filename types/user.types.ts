@@ -1,4 +1,4 @@
-
+// TYPE DECLARATION 
 export interface PlatformDetails {
   access_token: string | undefined;
   refresh_token: string | undefined;

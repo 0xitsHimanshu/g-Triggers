@@ -1,3 +1,5 @@
+//THEME SWITCHER COMPONENT
+// DARK, WHITE AND SYSTEM THEME SWITCHER
 "use client";
 
 import { Button } from "@/components/ui/button";

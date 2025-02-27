@@ -1,3 +1,4 @@
+// TO RESET PASSWORD AND GET NEW PASSWORD BY USER
 import { resetPasswordAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";

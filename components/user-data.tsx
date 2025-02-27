@@ -1,3 +1,4 @@
+// USER DATA WITH THEIR ALL PLATFORM PROFILE DETAILS
 "use client";
 
 import { useEffect, useState } from "react";
@@ -105,7 +106,7 @@ export default function UserProfile({ user }: UserProfileProps) {
   return (
     <div className="grid grid-cols-1 gap-6 p-6">
       <div className="flex gap-6">
-      {/* YouTube Section */}
+      {/* YOUTUBE SECTION */}
       { youtubeAccessToken && (
       <Card>
         <CardHeader>
@@ -149,7 +150,7 @@ export default function UserProfile({ user }: UserProfileProps) {
       </Card>
       )}
 
-      {/* Twitch Section */}
+      {/* TWITCH SECTION */}
       { twitchAccessToken && (
       <Card>
         <CardHeader>

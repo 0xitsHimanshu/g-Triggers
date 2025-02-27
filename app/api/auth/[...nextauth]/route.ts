@@ -22,6 +22,7 @@ interface User {
   platforms?: UserPlatforms;
 }
 
+// PROVIDER FOR DIFFERENT PLATFORMS
 export const authOptions = {
   providers: [
     TwitchProvider({

@@ -38,6 +38,7 @@ export default function RootLayout({
                     {" "}
                     {/* Navbar and */}
                     <div className="flex gap-5 items-center font-semibold">
+                      {/* LOGO WITH THE LINK OF THE HOME PAGE */}
                       <Link href={"/"} className="flex items-center gap-2">
                         <Image
                           src={"/logo.png"}

@@ -1,3 +1,4 @@
+// HOME-PAGE OR HERO PAGE
 import { AnimatedText } from "./animated-text";
 import localFont from "next/font/local";
 

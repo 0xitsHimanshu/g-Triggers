@@ -1,3 +1,4 @@
+// Sign In Page where all platform options are given for user so that they can sign in through their prior platform
 'use client';
 
 import { FormMessage, Message } from "@/components/form-message";
@@ -14,6 +15,8 @@ export default  function Login(props: { searchParams: Promise<Message> }) {
         Use your streaming platform to log in
       </p>
       <div className="flex flex-col gap-4">
+        
+        {/* BUTTON TO SIGN IN THROUGH TWITCH PLATFORM */}
         <Button
           onClick={() => signIn("twitch", { callbackUrl: "/platform" })}
           className="flex items-center gap-2 text-white bg-purple-600 hover:bg-purple-700"
@@ -21,6 +24,8 @@ export default  function Login(props: { searchParams: Promise<Message> }) {
           <TwitchIcon size={16} />
           Sign Up with Twitch
         </Button>
+
+        {/* BUTTON TO SIGN IN THROUGH YOUTUBE PLATFORM */}
         <Button
           onClick={() =>
             signIn("google", { callbackUrl: "/platform" })
@@ -30,6 +35,8 @@ export default  function Login(props: { searchParams: Promise<Message> }) {
           <YoutubeIcon size={16} />
           Sign Up with YouTube
         </Button>
+
+        {/* BUTTON TO SIGN IN THROUGH TROVO PLATFORM */}
         <Button
           onClick={() => signIn("trovo", { callbackUrl: "/platform" })}
           className="flex items-center gap-2 text-white bg-green-600 hover:bg-green-700"

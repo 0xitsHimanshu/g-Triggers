@@ -1,3 +1,4 @@
+// MONGOOSE IS USED TO ESTABLISH CONNECTION BETWEEN PROJECT AND MONGODB
 import mongoose from "mongoose";
 
 const MONGO_URI = process.env.NEXT_PUBLIC_MONGO_URI;

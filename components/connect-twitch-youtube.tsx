@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from "./ui/alert";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 
+// TYPE DECLARATION
 interface Platform {
   provider: string;
   access_token?: string;
@@ -32,6 +33,7 @@ const ConnectAccount = ({ userId, platforms, primaryProvider }: ConnectAccountPr
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
+  {/* PLATFORM OPTIONS FOR SIGN-IN */} 
   const platformConfig = {
     twitch: {
       name: "Twitch",

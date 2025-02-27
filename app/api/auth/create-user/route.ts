@@ -13,6 +13,7 @@ export async function POST(request: Request) {
       );
     }
 
+    // WAITING FOR DATABASE CONNECTION
     await connectToDatabase();
 
     // Check if the user already exists

@@ -1,3 +1,4 @@
+// DECLARATION OF ALL SCHEMA AND ITS TYPE
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface PlatformDetails {
