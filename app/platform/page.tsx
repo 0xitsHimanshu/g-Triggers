@@ -7,11 +7,7 @@ import User from "@/models/User";
 import UserDetails from "@/components/user-Detail";
 import ConnectAccount from "@/components/connect-twitch-youtube";
 import UserProfile from "@/components/user-data";
-<<<<<<< Updated upstream
-=======
-import DragAndDropButton from "@/components/dragAndDropBtn";
 import CountdownTimer from "@/components/countdownTimer";
->>>>>>> Stashed changes
 
 export default async function DashboardPage() {
   // Retrieve the session
