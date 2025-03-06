@@ -44,12 +44,19 @@ importers:
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       express-validator:
         specifier: ^7.2.1
         version: 7.2.1
       geist:
         specifier: ^1.3.1
+<<<<<<< Updated upstream
         version: 1.3.1(next@15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+=======
+        version: 1.3.1(next@15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+>>>>>>> Stashed changes
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -57,6 +64,7 @@ importers:
         specifier: ^0.456.0
         version: 0.456.0(react@18.3.1)
       mongoose:
+<<<<<<< Updated upstream
         specifier: ^8.11.0
         version: 8.11.0
       next:
@@ -65,6 +73,16 @@ importers:
       next-auth:
         specifier: ^4.24.11
         version: 4.24.11(next@15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(nodemailer@6.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+=======
+        specifier: ^8.12.1
+        version: 8.12.1
+      next:
+        specifier: latest
+        version: 15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-auth:
+        specifier: ^4.24.11
+        version: 4.24.11(next@15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(nodemailer@6.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+>>>>>>> Stashed changes
       next-themes:
         specifier: ^0.4.4
         version: 0.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -72,8 +90,8 @@ importers:
         specifier: ^6.10.0
         version: 6.10.0
       prettier:
-        specifier: ^3.5.2
-        version: 3.5.2
+        specifier: ^3.5.3
+        version: 3.5.3
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -280,53 +298,96 @@ packages:
   '@mongodb-js/saslprep@1.2.0':
     resolution: {integrity: sha512-+ywrb0AqkfaYuhHs6LxKWgqbh3I72EpEgESCw37o+9qPx9WTCkgDm2B+eMrwehGtHBWHFU4GXvnSCNiFhhausg==}
 
+<<<<<<< Updated upstream
   '@next/env@15.2.0':
     resolution: {integrity: sha512-eMgJu1RBXxxqqnuRJQh5RozhskoNUDHBFybvi+Z+yK9qzKeG7dadhv/Vp1YooSZmCnegf7JxWuapV77necLZNA==}
 
   '@next/swc-darwin-arm64@15.2.0':
     resolution: {integrity: sha512-rlp22GZwNJjFCyL7h5wz9vtpBVuCt3ZYjFWpEPBGzG712/uL1bbSkS675rVAUCRZ4hjoTJ26Q7IKhr5DfJrHDA==}
+=======
+  '@next/env@15.2.1':
+    resolution: {integrity: sha512-JmY0qvnPuS2NCWOz2bbby3Pe0VzdAQ7XpEB6uLIHmtXNfAsAO0KLQLkuAoc42Bxbo3/jMC3dcn9cdf+piCcG2Q==}
+
+  '@next/swc-darwin-arm64@15.2.1':
+    resolution: {integrity: sha512-aWXT+5KEREoy3K5AKtiKwioeblmOvFFjd+F3dVleLvvLiQ/mD//jOOuUcx5hzcO9ISSw4lrqtUPntTpK32uXXQ==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
+<<<<<<< Updated upstream
   '@next/swc-darwin-x64@15.2.0':
     resolution: {integrity: sha512-DiU85EqSHogCz80+sgsx90/ecygfCSGl5P3b4XDRVZpgujBm5lp4ts7YaHru7eVTyZMjHInzKr+w0/7+qDrvMA==}
+=======
+  '@next/swc-darwin-x64@15.2.1':
+    resolution: {integrity: sha512-E/w8ervu4fcG5SkLhvn1NE/2POuDCDEy5gFbfhmnYXkyONZR68qbUlJlZwuN82o7BrBVAw+tkR8nTIjGiMW1jQ==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
+<<<<<<< Updated upstream
   '@next/swc-linux-arm64-gnu@15.2.0':
     resolution: {integrity: sha512-VnpoMaGukiNWVxeqKHwi8MN47yKGyki5q+7ql/7p/3ifuU2341i/gDwGK1rivk0pVYbdv5D8z63uu9yMw0QhpQ==}
+=======
+  '@next/swc-linux-arm64-gnu@15.2.1':
+    resolution: {integrity: sha512-gXDX5lIboebbjhiMT6kFgu4svQyjoSed6dHyjx5uZsjlvTwOAnZpn13w9XDaIMFFHw7K8CpBK7HfDKw0VZvUXQ==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
+<<<<<<< Updated upstream
   '@next/swc-linux-arm64-musl@15.2.0':
     resolution: {integrity: sha512-ka97/ssYE5nPH4Qs+8bd8RlYeNeUVBhcnsNUmFM6VWEob4jfN9FTr0NBhXVi1XEJpj3cMfgSRW+LdE3SUZbPrw==}
+=======
+  '@next/swc-linux-arm64-musl@15.2.1':
+    resolution: {integrity: sha512-3v0pF/adKZkBWfUffmB/ROa+QcNTrnmYG4/SS+r52HPwAK479XcWoES2I+7F7lcbqc7mTeVXrIvb4h6rR/iDKg==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
+<<<<<<< Updated upstream
   '@next/swc-linux-x64-gnu@15.2.0':
     resolution: {integrity: sha512-zY1JduE4B3q0k2ZCE+DAF/1efjTXUsKP+VXRtrt/rJCTgDlUyyryx7aOgYXNc1d8gobys/Lof9P9ze8IyRDn7Q==}
+=======
+  '@next/swc-linux-x64-gnu@15.2.1':
+    resolution: {integrity: sha512-RbsVq2iB6KFJRZ2cHrU67jLVLKeuOIhnQB05ygu5fCNgg8oTewxweJE8XlLV+Ii6Y6u4EHwETdUiRNXIAfpBww==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
+<<<<<<< Updated upstream
   '@next/swc-linux-x64-musl@15.2.0':
     resolution: {integrity: sha512-QqvLZpurBD46RhaVaVBepkVQzh8xtlUN00RlG4Iq1sBheNugamUNPuZEH1r9X1YGQo1KqAe1iiShF0acva3jHQ==}
+=======
+  '@next/swc-linux-x64-musl@15.2.1':
+    resolution: {integrity: sha512-QHsMLAyAIu6/fWjHmkN/F78EFPKmhQlyX5C8pRIS2RwVA7z+t9cTb0IaYWC3EHLOTjsU7MNQW+n2xGXr11QPpg==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
+<<<<<<< Updated upstream
   '@next/swc-win32-arm64-msvc@15.2.0':
     resolution: {integrity: sha512-ODZ0r9WMyylTHAN6pLtvUtQlGXBL9voljv6ujSlcsjOxhtXPI1Ag6AhZK0SE8hEpR1374WZZ5w33ChpJd5fsjw==}
+=======
+  '@next/swc-win32-arm64-msvc@15.2.1':
+    resolution: {integrity: sha512-Gk42XZXo1cE89i3hPLa/9KZ8OuupTjkDmhLaMKFohjf9brOeZVEa3BQy1J9s9TWUqPhgAEbwv6B2+ciGfe54Vw==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
+<<<<<<< Updated upstream
   '@next/swc-win32-x64-msvc@15.2.0':
     resolution: {integrity: sha512-8+4Z3Z7xa13NdUuUAcpVNA6o76lNPniBd9Xbo02bwXQXnZgFvEopwY2at5+z7yHl47X9qbZpvwatZ2BRo3EdZw==}
+=======
+  '@next/swc-win32-x64-msvc@15.2.1':
+    resolution: {integrity: sha512-YjqXCl8QGhVlMR8uBftWk0iTmvtntr41PhG1kvzGp0sUP/5ehTM+cwx25hKE54J0CRnHYjSGjSH3gkHEaHIN9g==}
+>>>>>>> Stashed changes
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -855,8 +916,13 @@ packages:
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
 
+<<<<<<< Updated upstream
   caniuse-lite@1.0.30001701:
     resolution: {integrity: sha512-faRs/AW3jA9nTwmJBSO1PQ6L/EOgsB5HMQQq4iCu5zhPgVVgO/pZRHlmatwijZKetFw8/Pr4q6dEN8sJuq8qTw==}
+=======
+  caniuse-lite@1.0.30001702:
+    resolution: {integrity: sha512-LoPe/D7zioC0REI5W73PeR1e1MLCipRGq/VkovJnd6Df+QVqT+vT33OXCp8QUd7kA7RZrHWxb1B36OQKI/0gOA==}
+>>>>>>> Stashed changes
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -931,6 +997,9 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
   debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
     engines: {node: '>=6.0'}
@@ -970,8 +1039,13 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
+<<<<<<< Updated upstream
   electron-to-chromium@1.5.107:
     resolution: {integrity: sha512-dJr1o6yCntRkXElnhsHh1bAV19bo/hKyFf7tCcWgpXbuFIF0Lakjgqv5LRfSDaNzAII8Fnxg2tqgHkgCvxdbxw==}
+=======
+  electron-to-chromium@1.5.112:
+    resolution: {integrity: sha512-oen93kVyqSb3l+ziUgzIOlWt/oOuy4zRmpwestMn4rhFWAoFJeFuCVte9F2fASjeZZo7l/Cif9TiyrdW4CwEMA==}
+>>>>>>> Stashed changes
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1283,11 +1357,11 @@ packages:
   mongodb-connection-string-url@3.0.2:
     resolution: {integrity: sha512-rMO7CGo/9BFwyZABcKAWL8UJwH/Kc2x0g72uhDWzG48URRax5TCIcJ7Rc3RZqffZzO/Gwff/jyKwCU9TN8gehA==}
 
-  mongodb@6.13.1:
-    resolution: {integrity: sha512-gdq40tX8StmhP6akMp1pPoEVv+9jTYFSrga/g23JxajPAQhH39ysZrHGzQCSd9PEOnuEQEdjIWqxO7ZSwC0w7Q==}
+  mongodb@6.14.2:
+    resolution: {integrity: sha512-kMEHNo0F3P6QKDq17zcDuPeaywK/YaJVCEQRzPF3TOM/Bl9MFg64YE5Tu7ifj37qZJMhwU1tl2Ioivws5gRG5Q==}
     engines: {node: '>=16.20.1'}
     peerDependencies:
-      '@aws-sdk/credential-providers': ^3.632.0
+      '@aws-sdk/credential-providers': ^3.188.0
       '@mongodb-js/zstd': ^1.1.0 || ^2.0.0
       gcp-metadata: ^5.2.0
       kerberos: ^2.0.1
@@ -1310,8 +1384,13 @@ packages:
       socks:
         optional: true
 
+<<<<<<< Updated upstream
   mongoose@8.11.0:
     resolution: {integrity: sha512-xaQSuaLk2JKmXI5zDVVWXVCQTnWhAe8MFOijMnwOuP/wucKVphd3f+ouDKivCDMGjYBDrR7dtoyV0U093xbKqA==}
+=======
+  mongoose@8.12.1:
+    resolution: {integrity: sha512-UW22y8QFVYmrb36hm8cGncfn4ARc/XsYWQwRTaj0gxtQk1rDuhzDO1eBantS+hTTatfAIS96LlRCJrcNHvW5+Q==}
+>>>>>>> Stashed changes
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
@@ -1353,8 +1432,13 @@ packages:
       react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
       react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
 
+<<<<<<< Updated upstream
   next@15.2.0:
     resolution: {integrity: sha512-VaiM7sZYX8KIAHBrRGSFytKknkrexNfGb8GlG6e93JqueCspuGte8i4ybn8z4ww1x3f2uzY4YpTaBEW4/hvsoQ==}
+=======
+  next@15.2.1:
+    resolution: {integrity: sha512-zxbsdQv3OqWXybK5tMkPCBKyhIz63RstJ+NvlfkaLMc/m5MwXgz2e92k+hSKcyBpyADhMk2C31RIiaDjUZae7g==}
+>>>>>>> Stashed changes
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
@@ -1518,11 +1602,11 @@ packages:
     peerDependencies:
       preact: '>=10'
 
-  preact@10.26.2:
-    resolution: {integrity: sha512-0gNmv4qpS9HaN3+40CLBAnKe0ZfyE4ZWo5xKlC1rVrr0ckkEvJvAQqKaHANdFKsGstoxrY4AItZ7kZSGVoVjgg==}
+  preact@10.26.4:
+    resolution: {integrity: sha512-KJhO7LBFTjP71d83trW+Ilnjbo+ySsaAgCfXOXUlmGzJ4ygYPWmysm77yg4emwfmoz3b22yvH5IsVFHbhUaH5w==}
 
-  prettier@3.5.2:
-    resolution: {integrity: sha512-lc6npv5PH7hVqozBR7lkBNOGXV9vMwROAPlumdBkX0wTbbzPu/U1hk5yL8p2pt4Xoc+2mkT8t/sow2YrV/M5qg==}
+  prettier@3.5.3:
+    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1981,6 +2065,7 @@ snapshots:
     dependencies:
       sparse-bitfield: 3.0.3
 
+<<<<<<< Updated upstream
   '@next/env@15.2.0': {}
 
   '@next/swc-darwin-arm64@15.2.0':
@@ -2005,6 +2090,32 @@ snapshots:
     optional: true
 
   '@next/swc-win32-x64-msvc@15.2.0':
+=======
+  '@next/env@15.2.1': {}
+
+  '@next/swc-darwin-arm64@15.2.1':
+    optional: true
+
+  '@next/swc-darwin-x64@15.2.1':
+    optional: true
+
+  '@next/swc-linux-arm64-gnu@15.2.1':
+    optional: true
+
+  '@next/swc-linux-arm64-musl@15.2.1':
+    optional: true
+
+  '@next/swc-linux-x64-gnu@15.2.1':
+    optional: true
+
+  '@next/swc-linux-x64-musl@15.2.1':
+    optional: true
+
+  '@next/swc-win32-arm64-msvc@15.2.1':
+    optional: true
+
+  '@next/swc-win32-x64-msvc@15.2.1':
+>>>>>>> Stashed changes
     optional: true
 
   '@nodelib/fs.scandir@2.1.5':
@@ -2459,7 +2570,11 @@ snapshots:
   autoprefixer@10.4.20(postcss@8.4.49):
     dependencies:
       browserslist: 4.24.4
+<<<<<<< Updated upstream
       caniuse-lite: 1.0.30001701
+=======
+      caniuse-lite: 1.0.30001702
+>>>>>>> Stashed changes
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -2501,8 +2616,13 @@ snapshots:
 
   browserslist@4.24.4:
     dependencies:
+<<<<<<< Updated upstream
       caniuse-lite: 1.0.30001701
       electron-to-chromium: 1.5.107
+=======
+      caniuse-lite: 1.0.30001702
+      electron-to-chromium: 1.5.112
+>>>>>>> Stashed changes
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -2521,7 +2641,11 @@ snapshots:
 
   camelcase-css@2.0.1: {}
 
+<<<<<<< Updated upstream
   caniuse-lite@1.0.30001701: {}
+=======
+  caniuse-lite@1.0.30001702: {}
+>>>>>>> Stashed changes
 
   chokidar@3.6.0:
     dependencies:
@@ -2594,6 +2718,8 @@ snapshots:
 
   csstype@3.1.3: {}
 
+  date-fns@4.1.0: {}
+
   debug@4.4.0:
     dependencies:
       ms: 2.1.3
@@ -2622,7 +2748,11 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
+<<<<<<< Updated upstream
   electron-to-chromium@1.5.107: {}
+=======
+  electron-to-chromium@1.5.112: {}
+>>>>>>> Stashed changes
 
   emoji-regex@8.0.0: {}
 
@@ -2705,9 +2835,15 @@ snapshots:
       strip-ansi: 6.0.1
       wide-align: 1.1.5
 
+<<<<<<< Updated upstream
   geist@1.3.1(next@15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
     dependencies:
       next: 15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+=======
+  geist@1.3.1(next@15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
+    dependencies:
+      next: 15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+>>>>>>> Stashed changes
 
   get-intrinsic@1.3.0:
     dependencies:
@@ -2929,17 +3065,21 @@ snapshots:
       '@types/whatwg-url': 11.0.5
       whatwg-url: 14.1.1
 
-  mongodb@6.13.1:
+  mongodb@6.14.2:
     dependencies:
       '@mongodb-js/saslprep': 1.2.0
       bson: 6.10.3
       mongodb-connection-string-url: 3.0.2
 
+<<<<<<< Updated upstream
   mongoose@8.11.0:
+=======
+  mongoose@8.12.1:
+>>>>>>> Stashed changes
     dependencies:
       bson: 6.10.3
       kareem: 2.6.3
-      mongodb: 6.13.1
+      mongodb: 6.14.2
       mpath: 0.9.0
       mquery: 5.0.0
       ms: 2.1.3
@@ -2972,17 +3112,25 @@ snapshots:
 
   nanoid@3.3.8: {}
 
+<<<<<<< Updated upstream
   next-auth@4.24.11(next@15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(nodemailer@6.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+=======
+  next-auth@4.24.11(next@15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(nodemailer@6.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+>>>>>>> Stashed changes
     dependencies:
       '@babel/runtime': 7.26.9
       '@panva/hkdf': 1.2.1
       cookie: 0.7.2
       jose: 4.15.9
+<<<<<<< Updated upstream
       next: 15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+=======
+      next: 15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+>>>>>>> Stashed changes
       oauth: 0.9.15
       openid-client: 5.7.1
-      preact: 10.26.2
-      preact-render-to-string: 5.2.6(preact@10.26.2)
+      preact: 10.26.4
+      preact-render-to-string: 5.2.6(preact@10.26.4)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       uuid: 8.3.2
@@ -2994,6 +3142,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+<<<<<<< Updated upstream
   next@15.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 15.2.0
@@ -3001,11 +3150,21 @@ snapshots:
       '@swc/helpers': 0.5.15
       busboy: 1.6.0
       caniuse-lite: 1.0.30001701
+=======
+  next@15.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@next/env': 15.2.1
+      '@swc/counter': 0.1.3
+      '@swc/helpers': 0.5.15
+      busboy: 1.6.0
+      caniuse-lite: 1.0.30001702
+>>>>>>> Stashed changes
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       styled-jsx: 5.1.6(react@18.3.1)
     optionalDependencies:
+<<<<<<< Updated upstream
       '@next/swc-darwin-arm64': 15.2.0
       '@next/swc-darwin-x64': 15.2.0
       '@next/swc-linux-arm64-gnu': 15.2.0
@@ -3014,6 +3173,16 @@ snapshots:
       '@next/swc-linux-x64-musl': 15.2.0
       '@next/swc-win32-arm64-msvc': 15.2.0
       '@next/swc-win32-x64-msvc': 15.2.0
+=======
+      '@next/swc-darwin-arm64': 15.2.1
+      '@next/swc-darwin-x64': 15.2.1
+      '@next/swc-linux-arm64-gnu': 15.2.1
+      '@next/swc-linux-arm64-musl': 15.2.1
+      '@next/swc-linux-x64-gnu': 15.2.1
+      '@next/swc-linux-x64-musl': 15.2.1
+      '@next/swc-win32-arm64-msvc': 15.2.1
+      '@next/swc-win32-x64-msvc': 15.2.1
+>>>>>>> Stashed changes
       sharp: 0.33.5
     transitivePeerDependencies:
       - '@babel/core'
@@ -3129,14 +3298,14 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  preact-render-to-string@5.2.6(preact@10.26.2):
+  preact-render-to-string@5.2.6(preact@10.26.4):
     dependencies:
-      preact: 10.26.2
+      preact: 10.26.4
       pretty-format: 3.8.0
 
-  preact@10.26.2: {}
+  preact@10.26.4: {}
 
-  prettier@3.5.2: {}
+  prettier@3.5.3: {}
 
   pretty-format@3.8.0: {}
 

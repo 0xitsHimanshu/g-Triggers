@@ -7,6 +7,11 @@ import User from "@/models/User";
 import UserDetails from "@/components/user-Detail";
 import ConnectAccount from "@/components/connect-twitch-youtube";
 import UserProfile from "@/components/user-data";
+<<<<<<< Updated upstream
+=======
+import DragAndDropButton from "@/components/dragAndDropBtn";
+import CountdownTimer from "@/components/countdownTimer";
+>>>>>>> Stashed changes
 
 export default async function DashboardPage() {
   // Retrieve the session
@@ -37,6 +42,17 @@ export default async function DashboardPage() {
         </div>
       </div>
       <UserDetails user={user} />
+
+      {/* New section to display the user's streak */}
+      <div className="w-full text-center">
+        <p className="text-xl font-semibold">
+          Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
+        </p>
+      </div>
+
+      {/* Countdown Timer */}
+      <CountdownTimer />
+
       <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
     </div>
