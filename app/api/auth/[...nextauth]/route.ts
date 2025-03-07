@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import TwitchProvider from "next-auth/providers/twitch";
 import GoogleProvider from "next-auth/providers/google";
+import User from "../../../../models/User"; 
+import { updateUserStreak } from "../../../../utils/streakService";
 
 // Type definitions
 interface PlatformDetails {
@@ -126,6 +128,12 @@ export const authOptions = {
             headers: { "Content-Type": "application/json" },
           });
         }
+
+// Update the user's streak using direct DB access:
+        const dbUser = await User.findOne({ email: user.email });
+        if (dbUser) {
+          await updateUserStreak(dbUser);
+        }
     
         return true;
       } catch (error) {
@@ -166,8 +174,12 @@ export const authOptions = {
     },
 
     async jwt({ token, user, account }: { token: any; user: any; account: any }) {
-      if (account) {
+      if (user) {
         token.id = user.id;
+        // Pass along the current streak count (defaulting to 0 if undefined)
+        token.streakCount = user.streakCount || 0;
+      }
+      if (account) {
         token.accessToken = account.access_token;
       }
       return token;
