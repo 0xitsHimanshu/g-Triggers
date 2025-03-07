@@ -44,6 +44,7 @@ export default async function DashboardPage() {
         <p className="text-xl font-semibold">
           Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
         </p>
+        <p>Hi, {user.name}!</p>
       </div>
 
       {/* Countdown Timer */}
