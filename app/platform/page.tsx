@@ -30,6 +30,20 @@ export default async function DashboardPage() {
 
   const user = JSON.parse(JSON.stringify(userDoc));
 
+  // Function to calculate account age
+  const calculateAccountAge = (createdAt: string) => {
+    const createdDate = new Date(createdAt);
+    const now = new Date();
+
+    const diffTime = Math.abs(now.getTime() - createdDate.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 30) return `${diffDays} days`;
+    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months`;
+    return `${Math.floor(diffDays / 365)} years`;
+  };
+  
+
   return (
     <div className="flex-1 w-full flex flex-col gap-12 items-center pt-5 px-5">
       <div className="w-full">
@@ -41,14 +55,24 @@ export default async function DashboardPage() {
       <UserDetails user={user} />
       {/* New section to display the user's streak */}
       <div className="w-full text-center">
+
+  <p className="text-xl font-semibold">
+    Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
+  </p>
+  <p className="text-xl font-semibold">
+      Maximum Streak: {user.maxStreak || 0} {user.maxStreak === 1 ? "day" : "days"}
+  </p>
+      </div>
+
+      <div className="w-full text-center">
         <p className="text-xl font-semibold">
-          Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
+          Account Age: {calculateAccountAge(user.createdAt)}
         </p>
       </div>
 
       {/* Countdown Timer */}
       <CountdownTimer />
-
+      
       <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
       <DragAndDropButton widgetUrl={"http://localhost:3000/api/widget/testID"} />

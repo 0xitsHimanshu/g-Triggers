@@ -16,6 +16,7 @@ export interface UserDocument extends Document {
   // New fields for the streak system:
   streakCount?: number;
   lastActive?: Date;
+  maxStreak?: number;
 }
 
 const UserSchema = new Schema<UserDocument>({
@@ -23,10 +24,11 @@ const UserSchema = new Schema<UserDocument>({
   name: { type: String, required: true },
   primaryPlatform: { type: String },
   platforms: { type: Object, default: {} },
-  createdAt: { type: Date, default: Date.now },
-  // New fields for tracking streaks:
+  createdAt: { type: Date, default: () => new Date() },
+  // New fields for tracking streaks:wha
   streakCount: { type: Number, default: 0 },
   lastActive: { type: Date },
+  maxStreak: { type: Number, default: 0 },
 });
 
 const User = mongoose.models.User || mongoose.model<UserDocument>("User", UserSchema);
