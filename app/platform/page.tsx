@@ -10,7 +10,6 @@ import UserProfile from "@/components/user-data";
 import DragAndDropButton from "@/components/dragAndDropBtn";
 import CountdownTimer from "@/components/countdownTimer";
 
-
 export default async function DashboardPage() {
   // Retrieve the session
   const session = await getServerSession(authOptions);
@@ -56,6 +55,7 @@ export default async function DashboardPage() {
       <UserDetails user={user} />
       {/* New section to display the user's streak */}
       <div className="w-full text-center">
+
   <p className="text-xl font-semibold">
     Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
   </p>
@@ -72,8 +72,7 @@ export default async function DashboardPage() {
 
       {/* Countdown Timer */}
       <CountdownTimer />
-
-
+      
       <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
       <DragAndDropButton widgetUrl={"http://localhost:3000/api/widget/testID"} />
