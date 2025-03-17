@@ -19,14 +19,16 @@ export async function POST(request: Request) {
     let user = await User.findOne({ email });
 
     if (!user) {
+      // New user → grant 20 XP
       user = await User.create({
         email,
         name,
-        primaryPlatform: platform, // ✅ First platform becomes primary
+        primaryPlatform: platform,
         platforms: { [platform]: platformDetails },
         createdAt: new Date(),
       });
     } else {
+      // Existing user → update platform details but don't change XP
       user.platforms[platform] = platformDetails;
       await user.save();
     }
