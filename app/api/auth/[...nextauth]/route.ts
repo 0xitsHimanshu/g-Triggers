@@ -136,7 +136,6 @@ export const authOptions = {
             headers: { "Content-Type": "application/json" },
           });
         }
-    
         // Update the user's streak using direct DB access:
         const dbUser = await User.findOne({ email: user.email });
         if (dbUser) {
