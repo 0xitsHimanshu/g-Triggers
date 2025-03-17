@@ -11,7 +11,6 @@ import DragAndDropButton from "@/components/dragAndDropBtn";
 import CountdownTimer from "@/components/countdownTimer";
 import LEVELS from "@/utils/levels"; // Import levels array
 
-
 export default async function DashboardPage() {
   // Retrieve the session
   const session = await getServerSession(authOptions);
@@ -62,12 +61,22 @@ export default async function DashboardPage() {
 
       {/* Streak Info */}
       <div className="w-full text-center">
+<<<<<<< HEAD
         <p className="text-xl font-semibold">
           Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
         </p>
         <p className="text-xl font-semibold">
           Maximum Streak: {user.maxStreak || 0} {user.maxStreak === 1 ? "day" : "days"}
         </p>
+=======
+
+  <p className="text-xl font-semibold">
+    Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
+  </p>
+  <p className="text-xl font-semibold">
+      Maximum Streak: {user.maxStreak || 0} {user.maxStreak === 1 ? "day" : "days"}
+  </p>
+>>>>>>> 58d0622b2ec79611cb444b3a5baf7ebc1ec244ce
       </div>
 
       {/* XP Info */}
@@ -92,8 +101,7 @@ export default async function DashboardPage() {
 
       {/* Countdown Timer */}
       <CountdownTimer />
-
-
+      
       <ConnectAccount userId={user.email} platforms={user.platforms} primaryProvider={user.primaryPlatform} />
       <UserProfile user={user} />
       <DragAndDropButton widgetUrl={"http://localhost:3000/api/widget/testID"} />
