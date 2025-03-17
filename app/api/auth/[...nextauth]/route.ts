@@ -3,6 +3,7 @@ import TwitchProvider from "next-auth/providers/twitch";
 import GoogleProvider from "next-auth/providers/google";
 import User from "../../../../models/User"; 
 import { updateUserStreak } from "../../../../utils/streakService";
+import { addXP } from "../../../../utils/xp";
 
 // Type definitions
 interface PlatformDetails {
@@ -114,8 +115,13 @@ export const authOptions = {
             }),
             headers: { "Content-Type": "application/json" },
           });
+          
+          // Grant 20 XP if it's their first login (XP is still 0)
+          if (existingUser.xp === 0) {
+            await addXP(existingUser._id, 20);
+          }
         } else {
-          // New user → create user with the first platform as primary
+          // New user → create user with the first platform as primary & grant 20 XP
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/create-user`, {
             method: "POST",
             body: JSON.stringify({
@@ -124,11 +130,12 @@ export const authOptions = {
               primaryPlatform: account.provider,
               platform: account.provider,
               platformDetails,
+              xp: 20,
+              level: 1,
             }),
             headers: { "Content-Type": "application/json" },
           });
         }
-        
         // Update the user's streak using direct DB access:
         const dbUser = await User.findOne({ email: user.email });
         if (dbUser) {
@@ -176,7 +183,6 @@ export const authOptions = {
     async jwt({ token, user, account }: { token: any; user: any; account: any }) {
       if (user) {
         token.id = user.id;
-        // Pass along the current streak count (defaulting to 0 if undefined)
         token.streakCount = user.streakCount || 0;
       }
       if (account) {
