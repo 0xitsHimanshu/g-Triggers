@@ -40,8 +40,8 @@ export async function updateUserStreak(user: any) {
   }
 
   // Check if user reached a 4+ day streak
-  if (user.streakCount >= 2) {
-    await addXP(user._id, 90); // Reward 90 XP
+  if (user.streakCount >= 1) {
+    await addXP(user._id, 110); // Reward 90 XP
   }
 
   // Update max streak if it's the highest so far
