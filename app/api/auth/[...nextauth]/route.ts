@@ -1,6 +1,9 @@
 import NextAuth from "next-auth";
 import TwitchProvider from "next-auth/providers/twitch";
 import GoogleProvider from "next-auth/providers/google";
+import User from "../../../../models/User"; 
+import { updateUserStreak } from "../../../../utils/streakService";
+import { addXP } from "../../../../utils/xp";
 
 // Type definitions
 interface PlatformDetails {
@@ -54,7 +57,7 @@ export const authOptions = {
         let platformDetails: PlatformDetails | null = null;
     
         if (account?.provider === "twitch") {
-          // Fetch user details from Twitch API
+          // Fetch Twitch user details
           const twitchUserResponse = await fetch("https://api.twitch.tv/helix/users", {
             method: "GET",
             headers: {
@@ -72,7 +75,7 @@ export const authOptions = {
           const twitchUser = twitchUserData.data[0]; // Extract user details
           platformDetails = {
             provider: account.provider,
-            user_id: twitchUser.id, // Save Twitch user ID
+            user_id: twitchUser.id,
             access_token: account.access_token,
             refresh_token: account.refresh_token,
             expires_at: account.expires_at,
@@ -90,7 +93,7 @@ export const authOptions = {
           return false;
         }
     
-        // Check if the user exists in the database
+        // Check if the user exists via your API
         const existingUserResponse = await fetch(
           `${process.env.NEXTAUTH_URL}/api/auth/get-user?email=${user.email}`,
           {
@@ -102,7 +105,7 @@ export const authOptions = {
         const existingUser = await existingUserResponse.json();
     
         if (existingUser && existingUser._id) {
-          // User exists → Add platform details but keep primaryPlatform unchanged
+          // User exists → update platform details (keep primaryPlatform unchanged)
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/update-user`, {
             method: "PUT",
             body: JSON.stringify({
@@ -112,19 +115,31 @@ export const authOptions = {
             }),
             headers: { "Content-Type": "application/json" },
           });
+          
+          // Grant 20 XP if it's their first login (XP is still 0)
+          if (existingUser.xp === 0) {
+            await addXP(existingUser._id, 20);
+          }
         } else {
-          // New user → Set the first platform as their primary platform
+          // New user → create user with the first platform as primary & grant 20 XP
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/create-user`, {
             method: "POST",
             body: JSON.stringify({
               email: user.email,
               name: user.name,
-              primaryPlatform: account.provider, // ✅ Set primary platform on first sign-in
+              primaryPlatform: account.provider,
               platform: account.provider,
               platformDetails,
+              xp: 20,
+              level: 1,
             }),
             headers: { "Content-Type": "application/json" },
           });
+        }
+        // Update the user's streak using direct DB access:
+        const dbUser = await User.findOne({ email: user.email });
+        if (dbUser) {
+          await updateUserStreak(dbUser);
         }
     
         return true;
@@ -140,7 +155,7 @@ export const authOptions = {
           console.error("Error: session.user.email is undefined");
           return session;
         }
-
+    
         const response = await fetch(
           `${process.env.NEXTAUTH_URL}/api/auth/get-user?email=${session.user.email}`,
           {
@@ -148,16 +163,16 @@ export const authOptions = {
             headers: { "Content-Type": "application/json" },
           }
         );
-
+    
         if (!response.ok) {
           throw new Error(`Failed to fetch user data: ${response.statusText}`);
         }
-
+    
         const userData = await response.json();
         session.user.id = token.id || userData?.id;
         session.accessToken = token.accessToken;
         session.user.platforms = userData?.platforms || {};
-
+    
         return session;
       } catch (error) {
         console.error("Error in session callback:", error);
@@ -166,8 +181,11 @@ export const authOptions = {
     },
 
     async jwt({ token, user, account }: { token: any; user: any; account: any }) {
-      if (account) {
+      if (user) {
         token.id = user.id;
+        token.streakCount = user.streakCount || 0;
+      }
+      if (account) {
         token.accessToken = account.access_token;
       }
       return token;
