@@ -61,14 +61,6 @@ export default async function DashboardPage() {
 
       {/* Streak Info */}
       <div className="w-full text-center">
-<<<<<<< HEAD
-        <p className="text-xl font-semibold">
-          Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
-        </p>
-        <p className="text-xl font-semibold">
-          Maximum Streak: {user.maxStreak || 0} {user.maxStreak === 1 ? "day" : "days"}
-        </p>
-=======
 
   <p className="text-xl font-semibold">
     Current Streak: {user.streakCount || 0} {user.streakCount === 1 ? "day" : "days"}
@@ -76,7 +68,14 @@ export default async function DashboardPage() {
   <p className="text-xl font-semibold">
       Maximum Streak: {user.maxStreak || 0} {user.maxStreak === 1 ? "day" : "days"}
   </p>
->>>>>>> 58d0622b2ec79611cb444b3a5baf7ebc1ec244ce
+
+      </div>
+
+      {/* RP Info */}
+      <div className="w-full text-center">
+        <p className="text-xl font-semibold">
+          Total RP: {user.rp || 0}
+        </p>
       </div>
 
       {/* XP Info */}

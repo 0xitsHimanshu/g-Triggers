@@ -20,6 +20,8 @@ export interface UserDocument extends Document {
   // New fields for XP and leveling system:
   xp: number;
   level: number;
+  rp: number;
+  rpClaimed: boolean;
 }
 
 const UserSchema = new Schema<UserDocument>({
@@ -34,7 +36,9 @@ const UserSchema = new Schema<UserDocument>({
   maxStreak: { type: Number, default: 0 },
   // XP and level system:
   xp: { type: Number, default: 0 },
-  level: { type: Number, default: 1 }
+  level: { type: Number, default: 1 },
+  rp: { type: Number, default: 0 },
+  rpClaimed: { type: Boolean, default: false }
 });
 
 const User = mongoose.models.User || mongoose.model<UserDocument>("User", UserSchema);
